@@ -1,0 +1,75 @@
+.account-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: .5rem;
+}
+
+.card-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: var(--width);
+  height: 200px;
+  padding: .5rem;
+  gap: .2rem;
+  border: 2px solid red;
+  margin-bottom: 2rem;
+}
+
+.dashboard-card {
+  background-color: rgb(216, 174, 96);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  white-space: normal;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: .5rem;
+}
+
+.dashboard-card .card-text {
+  text-align: center;
+  margin-top: .9rem;
+}
+
+.dashboard-card:hover .card-text:hover {
+  transform: scale(1.05);
+  transition: all .3s ease-in-out;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+.dashboard-info {
+  border: 2px solid red;
+  width: var(--width);
+  height: auto;
+  padding: .7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.account-image {
+  border: 2px solid red;
+  width: 100px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 0px 0px .5rem 0px;
+  padding: .7rem;
+}
+.account-details{
+  border: 2px solid red;
+  font-size: 1rem;
+  font-weight: 500;
+  width: var(--width);
+  height: fit-content;
+  padding: .7rem;
+  margin-bottom: .7rem;
+}

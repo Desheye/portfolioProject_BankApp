@@ -1,0 +1,159 @@
+    .open_account {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: .5rem;
+        font-family: var(--fontFamilyMacondo);
+        background-color: var(--bgColorOverlay);
+    }
+
+    .open_account h1 {
+        font-size: 1.2em;
+        color: #000;
+        letter-spacing: 5px;
+        margin-bottom: .5rem;
+        text-align: center;
+    }
+
+
+    form {
+        width: 90%;
+        margin: 1rem 0px;
+        padding: 0 .5rem;
+    }
+
+    .open_account .inputbox {
+        position: relative;
+        width: var(--width);
+        height: 50px;
+        margin: 1rem 0px;
+        padding: 1rem 0px;
+    }
+
+    .open_account .inputbox input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--width);
+        border: 2px solid #000;
+        outline: none;
+        background: none;
+        padding: .4rem;
+        border-radius: 10px;
+        font-size: 1.2em;
+    }
+    .submit-btn{
+        width: 40%;
+        margin: 2rem 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .submit-btn .btn{
+       font-size: 1.3rem;
+        color: #000;
+        cursor: pointer;
+        overflow: hidden;
+        width: var(--width);
+       
+    }
+    .submit-btn .btn:hover{
+        background-color: rgb(19, 0, 18);
+        color: wheat;
+        letter-spacing: .2px;
+        transition: all .3s ease-in-out;
+        font-weight: var(--fwThin);
+    }
+    
+    
+    .open_account .inputbox span {
+        position: absolute;
+        top: 34px;
+        left: 20px;
+        font-size: var(--fs);
+        transition: 0.6s;
+        font-family: var(--fontFamilyMacondo);
+        background-color: var(--bgColorOverlay);
+        /* Match form background */
+        padding: 0 5px;
+    }
+
+    .open_account .inputbox input:focus~span,
+    .open_account .inputbox input:valid~span {
+        transform: translateX(-13px) translateY(-35px);
+        font-size: .8em;
+    }
+    .status-indicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 100px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 1000;
+      }
+      
+      .status-indicator.success {
+        color: green;
+        opacity: 1;
+      }
+      
+      .status-indicator.failure {
+        color: red;
+        opacity: 1;
+      }
+      
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      
+      .status-indicator.success,
+      .status-indicator.failure {
+        animation: fadeOut 2s ease-in-out 1s forwards;
+      }
+
+      /*** Media Query ***/
+
+     @media screen and (min-width: 481px) and (max-width: 834px) {
+        .open_account {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Aligns items to the top */
+            align-items: center;
+        }
+        
+        .open_account form {
+            width: 600px;
+            padding: 1rem 0px;
+            margin: 0;
+            height: auto;
+        }
+        .open_account .inputbox{
+            margin: 1.3rem 0px;
+        }
+        
+     }
+
+     @media screen and (min-width: 835px) and (max-width: 1290px){
+        .open_account form {
+            width: 600px;
+            padding: 1rem 0px;
+            margin: 0;
+            height: auto;
+        }
+        .open_account .inputbox{
+            margin: 1rem 0px;
+        }
+        .open_account .inputbox input {
+            font-size: 1.7rem;
+            height: 50px;
+            letter-spacing: 1.9px;
+        }
+        .btn{
+            font-size: 2.5rem;
+        }
+        
+     }
