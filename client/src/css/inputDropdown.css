@@ -1,122 +1,44 @@
-  .login-dropdown {
-    position: relative;
-    width: var(--width);
-    overflow: hidden;
-  }
-  form {
-    width: var(--width);
-    height: var(--height);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .dropdown {
-    position: relative;
-  }
-  .dropdown-button {
-    background-color: orchid;
-    box-shadow: .1rem .2rem rgb(63, 5, 61);
-    font-weight: var(--fwThin);
-    font-size: var(--fs);
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    width: 200px;
-  }
-  .dropdown-content {
-    position: absolute;
-    top: 100%; /* Changed from -100% to 100% to position below the button */
-    left: 0;
-    width: var(--width);
-    z-index: 1;
-    display: none;
-    background-color: #fff; /* Added background color for visibility */
-  }
-  .dropdown-button:hover + .dropdown-content,
-  .dropdown-content:hover {
-    display: block;
-  }
-  .dropdown-content button {
-    width: var(--width);
-    padding: .3rem;
-    font-size: 1.2rem;
-    transition: all 0.3s ease-in-out;
-    border: none; /* Added to remove default button borders */
-    background-color: #f9f9f9; /* Light background for buttons */
-    cursor: pointer; /* Added to show clickable cursor */
-  }
-  .dropdown-content button:hover {
-    color: wheat;
-    font-weight: var(--fwThin);
-    background-color: rgb(47, 5, 46);
-  }
-  .blocLayout{
-    width: 200px;
-    height: fit-content;
-  }
-  input {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: var(--width);
-    font-size: var(--fs);
-    font-weight: var(--fw);
-  }
-  
-  .submit-button {
-    margin-top: 1rem;
-    padding: .5rem;
-    background-color: #4CAF50;
-    color: rgb(49, 33, 4);
-    border: none;
-    border-radius: .5rem;
-    cursor: pointer;
-    width: var(--width);
-    font-size: var(--fs);
-  }
-  
-  .submit-button:hover {
-    background-color: #023004;
-    color: wheat;
-    font-weight: var(--fw);
-    letter-spacing: 3px;
-  }
+.login-dropdown {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.button {
+  padding: .9rem;
+  font-size: 1.5rem;
+  background-color: orangered;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-      /** Media Query**/
+.dropdown {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
 
-    @media screen and (min-width: 481px) and (max-width: 834px) {
-      .dropdown-button {
-        font-weight: var(--fw);
-        font-size: 1.8rem;
-        width: auto;
-        padding: 1rem;
-      }
-      .dropdown-content button {
-        width: var(--width);
-        height: 60px;
-        padding: .5rem;
-        font-size: 1.5rem;
-        transition: all 0.3s ease-in-out;
-        border: none; /* Added to remove default button borders */
-        background-color: #f9f9f9; /* Light background for buttons */
-        cursor: pointer; /* Added to show clickable cursor */
-      }
-      .blocLayout{
-        width: 300px;
-        height: fit-content;
-      }
-      input {
-        margin-top: .7rem;
-        padding: .5rem;
-        border: 1px solid #ccc;
-        border-radius: .5rem;
-        width: var(--width);
-        height: 70px;
-        font-size: 1.5rem;
-        font-weight: var(--fw);
-      }
-    }
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

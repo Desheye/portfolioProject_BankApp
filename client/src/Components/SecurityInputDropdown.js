@@ -1,147 +1,56 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Button, Dropdown, Form, Alert } from 'react-bootstrap';
 import '../css/inputDropdown.css';
-import { verifyCredentials } from '../services/authService';
 
 const SecurityInputDropdown = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
   const [inputValue, setInputValue] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const timeoutRef = useRef(null);
-  const inactivityTimeoutRef = useRef(null);
 
-  const resetState = () => {
-    setSelectedOption(null);
-    setInputValue('');
-    setIsDropdownOpen(false);
-  };
+  const handleTypeSelect = (type) => setSelectedType(type);
+  const handleInputChange = (e) => setInputValue(e.target.value);
 
-  const startTimeout = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(resetState, 5000);
-  };
-
-  const handleDropdownToggle = () => {
-    setIsDropdownOpen(prev => !prev);
-    startTimeout();
-  };
-
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-    setInputValue('');
-    startTimeout();
-  };
-
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-
-    if (selectedOption === 'pin' && !/^\d+$/.test(inputValue)) {
-      alert('Please enter a valid numeric PIN');
-      return;
-    }
-    if (selectedOption === 'password' && inputValue.length < 8) {
-      alert('Password must be at least 8 characters long');
-      return;
-    }
-
-    setInputValue(inputValue);
-    startTimeout();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!selectedOption) {
-      alert('Please select a security type');
-      return;
-    }
-
-    if (!inputValue) {
-      alert(`Please enter your ${selectedOption}`);
-      return;
-    }
-
+  const handleSubmit = async () => {
     try {
-      const isValid = await verifyCredentials(selectedOption, inputValue);
-      if (isValid) {
-        // Store the user's security info in localStorage
-        localStorage.setItem('userSecurity', JSON.stringify({ type: selectedOption, value: inputValue }));
-        navigate('/account-dashboard');
-      } else {
-        alert('Invalid credentials');
-      }
+      const payload = { type: selectedType.toLowerCase(), value: inputValue };
+      const response = await axios.post('/get-user-data', payload);
+      // Example usage of response data
+      console.log('Server response:', response.data);
+
+      localStorage.setItem('userSecurity', JSON.stringify(payload));
+      navigate('/account-dashboard');
     } catch (error) {
-      console.error('Error verifying credentials:', error);
-      alert('An error occurred. Please try again.');
+      setErrorMessage(error.response?.data?.error || 'Authentication failed.');
     }
   };
-
-  const startInactivityTimeout = useCallback(() => {
-    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
-    inactivityTimeoutRef.current = setTimeout(resetState, 5000);
-  }, []);
-
-  useEffect(() => {
-    const handleUserActivity = () => {
-      startInactivityTimeout();
-    };
-
-    window.addEventListener('mousemove', handleUserActivity);
-    window.addEventListener('keydown', handleUserActivity);
-
-    return () => {
-      window.removeEventListener('mousemove', handleUserActivity);
-      window.removeEventListener('keydown', handleUserActivity);
-    };
-  }, [startInactivityTimeout]);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      if (inactivityTimeoutRef.current) {
-        clearTimeout(inactivityTimeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <div className="login-dropdown">
-      <form onSubmit={handleSubmit}>
-        <div className="dropdown" role="menu" aria-label="Security Type">
-          <button
-            type="button"
-            className="dropdown-button"
-            onClick={handleDropdownToggle}
-            aria-haspopup="true"
-            aria-expanded={isDropdownOpen}
-          >
-            Select Security Type
-          </button>
-          {isDropdownOpen && (
-            <div className="dropdown-content">
-              <button className='btn' type="button" onClick={() => handleOptionSelect('pin')} role="menuitem">PIN</button>
-              <button className='btn' type="button" onClick={() => handleOptionSelect('password')} role="menuitem">Password</button>
-            </div>
-          )}
+      {!selectedType ? (
+        <Dropdown onSelect={handleTypeSelect}>
+          <Dropdown.Toggle>Select Security Type</Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="PIN">PIN</Dropdown.Item>
+            <Dropdown.Item eventKey="Password">Password</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      ) : (
+        <div className="inputGroup">
+          <Form.Control
+            type={selectedType === 'PIN' ? 'number' : 'password'}
+            placeholder={`Enter ${selectedType}`}
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+          <Button onClick={handleSubmit} variant="success" className="mt-2">
+            Submit
+          </Button>
         </div>
-        {selectedOption && (
-          <div className='blocLayout'>
-            <input
-              type={selectedOption === 'pin' ? 'number' : 'password'}
-              placeholder={`Enter ${selectedOption}`}
-              value={inputValue}
-              onChange={handleInputChange}
-            />
-            <button type="submit" className="submit-button">Submit</button>
-          </div>
-        )}
-      </form>
-      <Link to='/account' className='back'>
-        <h3>Go Back To Accounts</h3>
-      </Link>
+      )}
+      {errorMessage && <Alert variant="danger" className="mt-3">{errorMessage}</Alert>}
     </div>
   );
 };

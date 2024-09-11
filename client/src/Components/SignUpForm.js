@@ -1,3 +1,4 @@
+//client/src/Components/SignUpForm.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/signUpForm.css';
@@ -24,7 +25,7 @@ const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/signup', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -56,6 +57,7 @@ const SignUpForm = () => {
     }
   };
 
+  
   const closeModal = () => {
     setSubmitStatus(null);
     setUserDetails(null);
@@ -67,23 +69,23 @@ const SignUpForm = () => {
       <h1>Create Account Here</h1>
       <form onSubmit={handleSubmit}>
         <div className="inputbox">
-          <input type="text" name="fullname" required="required" onChange={handleChange} value={formData.fullname} />
+          <input type="text" name="fullname" required="required" autocomplete="fullname" onChange={handleChange} value={formData.fullname} />
           <span>Full Name</span>
         </div>
         <div className="inputbox">
-          <input type="email" name="email" required="required" onChange={handleChange} value={formData.email} />
+          <input type="email" name="email" required="required" autocomplete="email"  onChange={handleChange} value={formData.email} />
           <span>Email</span>
         </div>
         <div className="inputbox">
-          <input type="tel" name="tel" required="required" onChange={handleChange} value={formData.tel} />
+          <input type="tel" name="tel" required="required" autocomplete="tel"  onChange={handleChange} value={formData.tel} />
           <span>Phone Number</span>
         </div>
         <div className="inputbox">
-          <input type="password" name="password" required="required" onChange={handleChange} value={formData.password} />
+          <input type="password" name="password" required="required" autocomplete="new-password" onChange={handleChange} value={formData.password} />
           <span>Password</span>
         </div>
         <div className="inputbox">
-          <input type="password" name="confirm_password" required="required" onChange={handleChange} value={formData.confirm_password} />
+          <input type="password" name="confirm_password" required="required" autocomplete="new-password" onChange={handleChange} value={formData.confirm_password} />
           <span>Confirm Password</span>
         </div>
         <div className='submit-btn'>

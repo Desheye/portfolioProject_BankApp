@@ -13,8 +13,7 @@
   height: 200px;
   padding: .5rem;
   gap: .2rem;
-  border: 2px solid red;
-  margin-bottom: 2rem;
+  margin-bottom: .8rem;
 }
 
 .dashboard-card {
@@ -45,7 +44,6 @@
 }
 
 .dashboard-info {
-  border: 2px solid red;
   width: var(--width);
   height: auto;
   padding: .7rem;
@@ -57,19 +55,43 @@
 }
 
 .account-image {
-  border: 2px solid red;
-  width: 100px;
-  height: 200px;
+  border: 5px solid rgb(60, 10, 10);
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  margin: 0px 0px .5rem 0px;
   padding: .7rem;
 }
 .account-details{
-  border: 2px solid red;
   font-size: 1rem;
   font-weight: 500;
   width: var(--width);
   height: fit-content;
-  padding: .7rem;
+  padding: .2rem;
   margin-bottom: .7rem;
+}
+.account-details .account-mame,
+.account-details .account-number,
+.account-details .account-balance{
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.image-action-icons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.action-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #007bff;
+  margin: 5px;
+}
+
+.action-icon:hover {
+  color: #0056b3;
 }

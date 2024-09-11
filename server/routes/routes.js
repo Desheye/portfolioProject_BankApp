@@ -1,92 +1,108 @@
-// server/routes/routes.js
 const express = require('express');
 const bcrypt = require('bcrypt');
-const User = require('../Models/User');
-const { generatePIN, generateAccountNumber } = require('../Utils/accountUtils');
-
+const { User } = require('../models/User'); // Import the User model
+const { generatePIN, generateAccountNumber } = require('../utils/accountUtils');
+const { rateLimit } = require('../middleware/rateLimit'); // Moved rate limit to middleware
+const { getUserDataFromCache, cacheUserData } = require('../redisServer/redisServer');
 const router = express.Router();
 
-// Sample route
+// Sample routes
 router.get('/', (req, res) => {
-  res.send({ message: 'Hello from the server!' });
+  console.log('GET / hit');
+  res.send('What It Do, Bruah!');
 });
 
-// API endpoint to handle sign up
-router.post('/signup', async (req, res) => {
-  console.log('Received a request to /api/signup');
-  console.log('Request body:', req.body);
+router.get('/signup', (req, res) => {
+  console.log('GET /signup hit');
+  res.send('Sign Up Or Sign Out!');
+});
 
-  // Input validation
-  if (!req.body.email || !req.body.password || !req.body.fullname || !req.body.tel) {
-    return res.status(400).send({ error: 'Missing required fields' });
+// Sign-up Route
+router.post('/signup', async (req, res) => {
+  console.log('POST /signup hit');
+  const { email, password, fullname, tel } = req.body;
+  if (!email || !password || !fullname || !tel) {
+    console.log('Missing required fields');
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
-      ...req.body,
+      email,
       password: hashedPassword,
+      fullname,
+      tel,
       pin: generatePIN(),
-      accountNumber: generateAccountNumber()
+      accountNumber: generateAccountNumber(),
+      balance: 0
     });
     await newUser.save();
-    console.log('User saved to database:', newUser);
-    res.status(201).send({
+    console.log('User created successfully');
+    res.status(201).json({
       message: 'User created successfully',
-      user: {
-        fullname: newUser.fullname,
-        email: newUser.email,
-        tel: newUser.tel
-      }
+      user: { fullname: newUser.fullname, email: newUser.email, tel: newUser.tel }
     });
   } catch (error) {
     console.error('Error creating user:', error);
-    res.status(400).send({ error: 'Error creating user' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-// Route to fetch user data based on PIN or password
+// Fetch user data with Redis caching
 router.post('/get-user-data', async (req, res) => {
-  const { type, value } = req.body;
-
-  // Input validation
-  if (!type || !value) {
-    return res.status(400).send({ error: 'Missing required fields' });
-  }
+  console.log('POST /get-user-data hit');
+  const { type, value, email } = req.body;
+  const cacheKey = type === 'pin' ? `user:pin:${value}` : `user:email:${email}`;
 
   try {
-    let user;
+    // Check cache first
+    const cachedData = await getUserDataFromCache(cacheKey, req.redis);
+    if (cachedData) {
+      console.log('Cached data found');
+      return res.json(cachedData);
+    }
 
+    // Retrieve user from MongoDB
+    let user;
     if (type === 'pin') {
       user = await User.findOne({ pin: value });
     } else if (type === 'password') {
-      user = await User.findOne({ email: req.body.email });
-      if (!user) return res.status(404).json({ error: 'User not found' });
-      const isMatch = await bcrypt.compare(value, user.password);
-      if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
+      user = await User.findOne({ email });
+      if (!user || !(await bcrypt.compare(value, user.password))) {
+        console.log('Invalid credentials');
+        return res.status(404).json({ error: 'Invalid credentials' });
+      }
     }
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) {
+      console.log('User not found');
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-    // Return only the required fields
-    res.json({
+    const responseData = {
       fullname: user.fullname,
       accountNumber: user.accountNumber,
       balance: user.balance
-    });
+    };
+
+    // Cache the user data
+    await cacheUserData(cacheKey, responseData, req.redis);
+    console.log('User data cached and returned');
+    res.json(responseData);
   } catch (error) {
     console.error('Error fetching user data:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// API endpoint to verify credentials (PIN or password)
-router.post('/verify', async (req, res) => {
+// Verify credentials (PIN or password)
+router.post('/verify', rateLimit, async (req, res) => {
+  console.log('POST /verify hit');
   const { type, value, email } = req.body;
-
-  // Input validation
   if (!type || !value || (!email && type === 'password')) {
-    return res.status(400).send({ error: 'Missing required fields' });
+    console.log('Missing required fields');
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
@@ -95,11 +111,13 @@ router.post('/verify', async (req, res) => {
       user = await User.findOne({ pin: value });
     } else if (type === 'password') {
       user = await User.findOne({ email });
-      if (!user) return res.status(404).json({ error: 'User not found' });
-      const isMatch = await bcrypt.compare(value, user.password);
-      if (!isMatch) user = null;
+      if (!user || !(await bcrypt.compare(value, user.password))) {
+        console.log('Invalid credentials');
+        return res.status(404).json({ error: 'Invalid credentials' });
+      }
     }
 
+    console.log('Credentials verified');
     res.json({ isValid: !!user });
   } catch (error) {
     console.error('Error verifying credentials:', error);
