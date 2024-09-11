@@ -9,8 +9,9 @@ const router = express.Router();
 // Sample routes
 router.get('/', (req, res) => {
   console.log('GET / hit');
-  res.send('What It Do, Bruah!');
+  res.send('Welcome to the backend!');
 });
+
 
 router.get('/signup', (req, res) => {
   console.log('GET /signup hit');
@@ -22,9 +23,11 @@ router.post('/signup', async (req, res) => {
   console.log('POST /signup hit');
   const { email, password, fullname, tel } = req.body;
   if (!email || !password || !fullname || !tel) {
+    console.log('Received - email:', email, 'password:', password, 'fullname:', fullname, 'tel:', tel);
     console.log('Missing required fields');
     return res.status(400).json({ error: 'Missing required fields' });
   }
+
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -43,16 +46,19 @@ router.post('/signup', async (req, res) => {
       message: 'User created successfully',
       user: { fullname: newUser.fullname, email: newUser.email, tel: newUser.tel }
     });
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'Server error' });
+  }catch (error) {
+    console.error('Error details:', error); // Capture more information
+    res.status(500).json({ error: 'Server error', details: error.message });
   }
+  
 });
 
 // Fetch user data with Redis caching
 router.post('/get-user-data', async (req, res) => {
   console.log('POST /get-user-data hit');
   const { type, value, email } = req.body;
+  console.log('Query type:', type, 'Value:', value, 'Email:', email);
+
   const cacheKey = type === 'pin' ? `user:pin:${value}` : `user:email:${email}`;
 
   try {
@@ -66,11 +72,13 @@ router.post('/get-user-data', async (req, res) => {
     // Retrieve user from MongoDB
     let user;
     if (type === 'pin') {
+      console.log('Searching for user by pin:', value);
       user = await User.findOne({ pin: value });
     } else if (type === 'password') {
+      console.log('Searching for user by email:', email);
       user = await User.findOne({ email });
       if (!user || !(await bcrypt.compare(value, user.password))) {
-        console.log('Invalid credentials');
+        console.log('Invalid credentials:', email);
         return res.status(404).json({ error: 'Invalid credentials' });
       }
     }
