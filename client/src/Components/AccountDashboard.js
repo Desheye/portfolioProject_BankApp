@@ -1,85 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Card } from "react-bootstrap";
-import { FaPaperPlane, FaInbox, FaFileInvoiceDollar, FaEllipsisH } from "react-icons/fa";
-import { fetchUserData } from '../services/authService';
-import "../css/accountDashboard.css";
+// components/AccountDashboard.js
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Row, Col, Card } from 'react-bootstrap';
+import { FaPaperPlane, FaInbox, FaFileInvoiceDollar, FaEllipsisH } from 'react-icons/fa';
+import '../css/accountDashboard.css';
 
 const AccountDashboard = () => {
-  const [userData, setUserData] = useState({
-    fullname: '',
-    accountNumber: '',
-    accountBalance: 0
-  });
+  // Extract user data from Redux store
+  const { fullname, accountNumber, accountBalance } = useSelector(state => state.user);
 
+  // Log user state for debugging purposes
   useEffect(() => {
-    const userSecurity = localStorage.getItem('userSecurity');
-    if (userSecurity) {
-      const { type, value } = JSON.parse(userSecurity);
-      const loadUserData = async () => {
-        try {
-          const data = await fetchUserData(type, value);
-          setUserData({
-            fullname: data.fullname,
-            accountNumber: data.accountNumber,
-            accountBalance: data.balance
-          });
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      };
-      loadUserData();
-    } else {
-      console.error("No security data found in localStorage");
-    }
-  }, []);
+    console.log('User state:', { fullname, accountNumber, accountBalance });
+  }, [fullname, accountNumber, accountBalance]);
+
+  // Helper function to render a feature card
+  const renderFeatureCard = (icon, title, description) => (
+    <Col md={3}>
+      <Card>
+        <Card.Body>
+          {icon}
+          <Card.Title>{title}</Card.Title>
+          <Card.Text>{description}</Card.Text>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
 
   return (
     <div className="account-dashboard">
-      {/* Cards Section */}
+      {/* Feature cards row */}
       <Row className="mb-4">
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <FaPaperPlane size={30} className="mb-2" />
-              <Card.Title>Send Money</Card.Title>
-              <Card.Text>Transfer funds to others</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <FaInbox size={30} className="mb-2" />
-              <Card.Title>Inbox</Card.Title>
-              <Card.Text>Check your recent messages</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <FaFileInvoiceDollar size={30} className="mb-2" />
-              <Card.Title>Transactions</Card.Title>
-              <Card.Text>View recent transactions</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <FaEllipsisH size={30} className="mb-2" />
-              <Card.Title>More</Card.Title>
-              <Card.Text>Explore more features</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
+        {renderFeatureCard(<FaPaperPlane size={30} className="mb-2" />, "Send Money", "Transfer funds to others")}
+        {renderFeatureCard(<FaInbox size={30} className="mb-2" />, "Inbox", "Check your recent messages")}
+        {renderFeatureCard(<FaFileInvoiceDollar size={30} className="mb-2" />, "Transactions", "View recent transactions")}
+        {renderFeatureCard(<FaEllipsisH size={30} className="mb-2" />, "More", "Explore more features")}
       </Row>
 
-      {/* User Information Section */}
+      {/* User information section */}
       <div className="user-info">
-        <h3>{userData.fullname || 'Account Holder Name'}</h3>
-        <p>Account Number: {userData.accountNumber || '***786'}</p>
-        <p>Current Balance: N{userData.accountBalance ? userData.accountBalance.toLocaleString() : '--,--'}</p>
+        <h3>{fullname || 'Account Holder Name'}</h3>
+        <p>Account Number: {accountNumber || '***786'}</p>
+        <p>Current Balance: ₦{accountBalance ? accountBalance.toLocaleString() : '--,--'}</p>
       </div>
     </div>
   );
