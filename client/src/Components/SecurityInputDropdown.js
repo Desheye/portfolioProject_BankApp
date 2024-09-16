@@ -1,57 +1,115 @@
-// components/SecurityInputDropdown.jsx
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, Button, Form, Alert } from 'react-bootstrap';
-import { setSecurityType, fetchUserData } from '../actions/userActions';
-import { useNavigate } from 'react-router-dom';
-import '../../src/css/inputDropdown.css';
+// src/Components/SecurityInputDropdown.js
 
+import React, { useState, useCallback, useEffect } from 'react';
+import { Dropdown, Button, Form, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../actions/userActions'; // Import the login action
+import { Link } from 'react-router-dom';
+import "../css/inputDropdown.css";
 
 const SecurityInputDropdown = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, type } = useSelector(state => state.user);
-  const [inputValue, setInputValue] = useState('');
+  const dispatch = useDispatch();
 
-  // Handle selection of security type
-  const handleTypeSelect = (type) => {
-    dispatch(setSecurityType(type, inputValue));
-  };
+  const [type, setType] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [password, setPassword] = useState("");
 
-  // Handle input change
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  // Use optional chaining to prevent errors if state.user is undefined
+  const { isAuthenticated, error } = useSelector((state) => state.user || {});
 
-  // Handle form submission
-  const handleSubmit = () => {
-    if (type) {
-      dispatch(fetchUserData(type, inputValue));
-      navigate('/account-dashboard');
+  const handleTypeSelect = useCallback((selectedType) => {
+    setType(selectedType);
+    setInputValue("");
+  }, []);
+
+  const handleInputChange = useCallback((e) => {
+    const { value } = e.target;
+    setInputValue(value.trim());
+  }, []);
+
+  const handlePasswordChange = useCallback((e) => {
+    const { value } = e.target;
+    setPassword(value.trim());
+  }, []);
+
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    if (type === "PIN" && inputValue) {
+      // Dispatch login with PIN
+      dispatch(loginUser({ pin: inputValue }));
+    } else if (type === "Password" && password) {
+      // Dispatch login with Password
+      dispatch(loginUser({ password }));
+    } else {
+      // Handle error
+      console.error("Please provide either PIN or Password.");
+    }
+  }, [dispatch, type, inputValue, password]);
+  
+
+  const getPlaceholder = () => {
+    switch (type) {
+      case "PIN":
+        return "Enter your PIN";
+      case "Password":
+        return "Enter your password";
+      default:
+        return "Enter your security info";
     }
   };
 
-  return (
-    <div className="login-dropdown">
-      <Dropdown onSelect={handleTypeSelect}>
-        <Dropdown.Toggle>Select Security Type</Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item eventKey="PIN">PIN</Dropdown.Item>
-          <Dropdown.Item eventKey="Password">Password</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-      
-      <Form.Control
-        type="text"
-        placeholder="Enter your security info"
-        value={inputValue}
-        onChange={handleInputChange}
-      />
-      <Button onClick={handleSubmit} variant="success" className="mt-2">
-        Submit
-      </Button>
+  // Redirect to account dashboard if authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/account-dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
-      {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
+  return (
+    <div className="login-dropdown d-flex flex-column justify-content-center align-items-center">
+      <div className="dropdownGrid">
+        <Dropdown onSelect={handleTypeSelect}>
+          <Dropdown.Toggle aria-label="Select Security Type">
+            {type || "Select Security Type"}
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="bg-success" role="menu">
+            <Dropdown.Item eventKey="PIN" aria-label="PIN">PIN</Dropdown.Item>
+            <Dropdown.Item eventKey="Password" aria-label="Password">Password</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Form onSubmit={handleSubmit} className="formInputGrid">
+          <Form.Control
+            type={type === "PIN" ? "number" : "password"}
+            placeholder={getPlaceholder()}
+            value={inputValue}
+            onChange={handleInputChange}
+            aria-label={`${type || "Security"} Input`}
+            className="formInputGrid"
+          />
+          {type === "Password" && (
+            <Form.Control
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={handlePasswordChange}
+              aria-label="Password Input"
+              className="formInputGrid mt-2"
+            />
+          )}
+          <Button type="submit" variant="success" className="button mt-3">
+            Submit
+          </Button>
+
+          <Link to='/account' className='linktag'>
+            <h3 className='back'>Go Back To Accounts</h3>
+          </Link>
+        </Form>
+      </div>
+      {/* Display error if present */}
+      {error && <Alert variant="danger" role="alert">{error}</Alert>}
     </div>
   );
 };

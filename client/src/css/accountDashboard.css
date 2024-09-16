@@ -1,97 +1,49 @@
+/* accountDashboard.css */
 .account-dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: .5rem;
+  padding: 20px;
+  width: 90%;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
-.card-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: var(--width);
-  height: 200px;
-  padding: .5rem;
-  gap: .2rem;
-  margin-bottom: .8rem;
-}
-
-.dashboard-card {
-  background-color: rgb(216, 174, 96);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  white-space: normal;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: .5rem;
-}
-
-.dashboard-card .card-text {
-  text-align: center;
-  margin-top: .9rem;
-}
-
-.dashboard-card:hover .card-text:hover {
-  transform: scale(1.05);
-  transition: all .3s ease-in-out;
-  font-weight: bold;
+.feature-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   cursor: pointer;
 }
 
-.icon {
-  font-size: 24px;
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.dashboard-info {
-  width: var(--width);
-  height: auto;
-  padding: .7rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.account-image {
-  border: 5px solid rgb(60, 10, 10);
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  padding: .7rem;
-}
-.account-details{
-  font-size: 1rem;
-  font-weight: 500;
-  width: var(--width);
-  height: fit-content;
-  padding: .2rem;
-  margin-bottom: .7rem;
-}
-.account-details .account-mame,
-.account-details .account-number,
-.account-details .account-balance{
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.image-action-icons {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.action-icon {
-  cursor: pointer;
-  font-size: 20px;
+.feature-icon {
   color: #007bff;
-  margin: 5px;
 }
 
-.action-icon:hover {
-  color: #0056b3;
+.user-info-card {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  width: 500px;
+  margin: 7rem auto;
+  padding: .5rem;
+}
+
+.user-name {
+  color: #343a40;
+  font-weight: bold;
+}
+
+.account-number, .account-balance {
+  color: #6c757d;
+}
+
+.account-balance {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+@media (max-width: 768px) {
+  .account-dashboard {
+    padding: 10px;
+  }
 }

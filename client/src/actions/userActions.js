@@ -1,80 +1,50 @@
-// actions/userActions.js
+// src/actions/userActions.js
+import axios from 'axios';
 
 // Action Types
-export const SET_SECURITY_TYPE = 'SET_SECURITY_TYPE';
-export const SET_USER_DATA = 'SET_USER_DATA';
-export const SET_ERROR = 'SET_ERROR';
+export const USER_SIGNUP_REQUEST = 'USER_SIGNUP_REQUEST';
+export const USER_SIGNUP_SUCCESS = 'USER_SIGNUP_SUCCESS';
+export const USER_SIGNUP_FAIL = 'USER_SIGNUP_FAIL';
+export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
+export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
+export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
 
-// Action Creators
-export const setSecurityType = (type, value) => ({
-  type: SET_SECURITY_TYPE,
-  payload: { type, value },
-});
-
-export const setUserData = (userData) => ({
-  type: SET_USER_DATA,
-  payload: userData,
-});
-
-export const setError = (error) => ({
-  type: SET_ERROR,
-  payload: error,
-});
-
-// Async Action Creators
-export const signUpUser = (userData) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Signup failed');
-      }
-
-      const data = await response.json();
-      dispatch(setUserData({
-        fullname: data.user.fullname,
-        accountNumber: data.user.accountNumber,
-        balance: data.user.balance,
-      }));
-
-      // Note: Navigation should be handled in the component, not here
-    } catch (error) {
-      dispatch(setError(error.message));
-    }
-  };
+// Signup action
+export const signupUser = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_SIGNUP_REQUEST });
+    const response = await axios.post('/api/users/signup', userData);
+    dispatch({
+      type: USER_SIGNUP_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_SIGNUP_FAIL,
+      payload: error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,
+    });
+  }
 };
 
-// Add the missing fetchUserData action
-export const fetchUserData = (type, value) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ type, value }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
-      dispatch(setUserData({
-        fullname: data.user.fullname,
-        accountNumber: data.user.accountNumber,
-        balance: data.user.balance,
-      }));
-    } catch (error) {
-      dispatch(setError(error.message));
-    }
-  };
+// Login action
+export const loginUser = (credentials) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_LOGIN_REQUEST });
+    const { pin, password } = credentials;
+    let loginData = pin ? { pin, password } : { password };
+    const response = await axios.post('/api/users/login', loginData);
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload: error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,
+    });
+  }
 };

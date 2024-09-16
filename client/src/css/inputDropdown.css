@@ -1,44 +1,40 @@
 .login-dropdown {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.button {
-  padding: .9rem;
-  font-size: 1.5rem;
-  background-color: orangered;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.dropdownGrid{
+  width: 400px;
+}
+.login-dropdown .dropdown-toggle {
+  background-color: #051220; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
 }
 
-.dropdown {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
+.login-dropdown .dropdown-menu {
+  background-color: #fff; /* Menu background color */
+  border: 1px solid #ddd; /* Border color */
+  border-radius: 4px; /* Rounded corners */
 }
 
-.buttonGroup {
-  display: flex;
-  gap: 10px;
+.login-dropdown .form-control {
+  margin-top: 10px; /* Space above the input */
+  border-radius: 4px; /* Rounded corners */
 }
 
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.login-dropdown .btn-success {
+  background-color: #28a745; /* Button background color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+
 }
 
-.input {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.login-dropdown .alert-danger {
+  margin-top: 10px; /* Space above the alert */
+  border-radius: 4px; /* Rounded corners */
+}
+.formInputGrid{
+  width: 350px;
 }

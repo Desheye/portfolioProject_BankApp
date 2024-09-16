@@ -1,36 +1,40 @@
-// reducers/userReducer.js
-import { SET_SECURITY_TYPE, SET_USER_DATA, SET_ERROR } from '../actions/userActions';
+// src/reducers/userReducer.js
+import {
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAIL,
+  USER_SIGNUP_REQUEST,
+  USER_SIGNUP_SUCCESS,
+  USER_SIGNUP_FAIL
+} from '../actions/userActions';
 
 const initialState = {
-  type: null,
-  value: '',
-  fullname: '',
-  accountNumber: '',
-  accountBalance: 0,
+  userInfo: null,
+  loading: false,
   error: null,
+  isAuthenticated: false,
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_SECURITY_TYPE:
+    case USER_LOGIN_REQUEST:
+    case USER_SIGNUP_REQUEST:
+      return { ...state, loading: true, error: null };
+
+    case USER_LOGIN_SUCCESS:
+    case USER_SIGNUP_SUCCESS:
       return {
         ...state,
-        type: action.payload.type,
-        value: action.payload.value,
+        loading: false,
+        userInfo: action.payload,
+        isAuthenticated: true,
+        error: null
       };
-    case SET_USER_DATA:
-      return {
-        ...state,
-        fullname: action.payload.fullname,
-        accountNumber: action.payload.accountNumber,
-        accountBalance: action.payload.balance,
-        error: null,
-      };
-    case SET_ERROR:
-      return {
-        ...state,
-        error: action.payload,
-      };
+
+    case USER_LOGIN_FAIL:
+    case USER_SIGNUP_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
     default:
       return state;
   }

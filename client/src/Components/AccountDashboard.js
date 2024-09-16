@@ -1,49 +1,50 @@
-// components/AccountDashboard.js
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Row, Col, Card } from 'react-bootstrap';
+// src/Components/AccountDashboard.js
+import React from 'react';
+import { useSelector } from 'react-redux'; // Import useSelector to access Redux store
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaPaperPlane, FaInbox, FaFileInvoiceDollar, FaEllipsisH } from 'react-icons/fa';
+import { Link as RouterLink } from 'react-router-dom';
 import '../css/accountDashboard.css';
 
 const AccountDashboard = () => {
-  // Extract user data from Redux store
-  const { fullname, accountNumber, accountBalance } = useSelector(state => state.user);
+  // Access user data from Redux store
+  const { user } = useSelector((state) => state.auth); // Adjust state path if necessary
 
-  // Log user state for debugging purposes
-  useEffect(() => {
-    console.log('User state:', { fullname, accountNumber, accountBalance });
-  }, [fullname, accountNumber, accountBalance]);
-
-  // Helper function to render a feature card
-  const renderFeatureCard = (icon, title, description) => (
-    <Col md={3}>
-      <Card>
-        <Card.Body>
-          {icon}
-          <Card.Title>{title}</Card.Title>
-          <Card.Text>{description}</Card.Text>
-        </Card.Body>
-      </Card>
-    </Col>
-  );
+  // Features array for navigation
+  const features = [
+    { icon: <FaPaperPlane size={30} />, title: "Send Money", description: "Transfer funds to others", link: "/send-money" },
+    { icon: <FaInbox size={30} />, title: "Inbox", description: "Check your recent messages", link: "/inbox" },
+    { icon: <FaFileInvoiceDollar size={30} />, title: "Transactions", description: "View recent transactions", link: "/transaction-form" },
+    { icon: <FaEllipsisH size={30} />, title: "More", description: "Explore more features", link: "/more" }
+  ];
 
   return (
-    <div className="account-dashboard">
-      {/* Feature cards row */}
-      <Row className="mb-4">
-        {renderFeatureCard(<FaPaperPlane size={30} className="mb-2" />, "Send Money", "Transfer funds to others")}
-        {renderFeatureCard(<FaInbox size={30} className="mb-2" />, "Inbox", "Check your recent messages")}
-        {renderFeatureCard(<FaFileInvoiceDollar size={30} className="mb-2" />, "Transactions", "View recent transactions")}
-        {renderFeatureCard(<FaEllipsisH size={30} className="mb-2" />, "More", "Explore more features")}
+    <Container className="py-5 account-dashboard">
+      <Row className="mb-4 g-3">
+        {features.map((feature, index) => (
+          <Col key={index} lg={3} md={6} sm={12}>
+            <RouterLink to={feature.link} className="text-decoration-none">
+              <Card className="h-100 feature-card">
+                <Card.Body className="d-flex flex-column align-items-center justify-content-center text-center">
+                  <div className="feature-icon mb-3">{feature.icon}</div>
+                  <Card.Title>{feature.title}</Card.Title>
+                  <Card.Text>{feature.description}</Card.Text>
+                </Card.Body>
+              </Card>
+            </RouterLink>
+          </Col>
+        ))}
       </Row>
 
-      {/* User information section */}
-      <div className="user-info">
-        <h3>{fullname || 'Account Holder Name'}</h3>
-        <p>Account Number: {accountNumber || '***786'}</p>
-        <p>Current Balance: ₦{accountBalance ? accountBalance.toLocaleString() : '--,--'}</p>
-      </div>
-    </div>
+      <Card className="user-info-card mt-4">
+        <Card.Body>
+          {/* Display user information from Redux store */}
+          <h3 className="user-name">{user?.fullname || "Account Holder Name"}</h3>
+          <p className="account-number">Account Number: {user?.accountNumber || "***786"}</p>
+          <p className="account-balance">Current Balance: ₦{user?.currentBalance || "--,--"}</p>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

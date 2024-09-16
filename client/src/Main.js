@@ -1,13 +1,13 @@
 // Main.js
 import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store'; // Import the store we just created
 import Navigate from './Components/Navigate';
 import SignUpForm from './Components/SignUpForm';
 import AccountDashboard from './Components/AccountDashboard';
-import TransactionForm from './Components/TransactionForm';
+//import TransactionForm from './Components/TransactionForm';
 import SecurityInputDropdown from './Components/SecurityInputDropdown';
+//import SendMoney from './Components/SendMoney';
+
 import HomePage from './Pages/HomePage';
 import AboutPage from './Pages/AboutPage';
 import AccountPage from './Pages/AccountPage';
@@ -26,7 +26,6 @@ function Main() {
   }
 
   return (
-    <Provider store={store}>
       <div className="Main-Container">
         <header>
           <h1>Bank Of The SouthWesternLands</h1>
@@ -40,13 +39,16 @@ function Main() {
           <Route path="/contact" element={<ContactPage isMenuOpen={isMenuOpen} />} />
           <Route path="/career" element={<CareerPage isMenuOpen={isMenuOpen} />} />
           <Route path="/open_account" element={<SignUpForm />} />
-          <Route path="/account-dashboard" element={<AccountDashboard isMenuOpen={isMenuOpen} userType="pin" userValue="1234" />} />
-          <Route path="/transaction-form" element={<TransactionForm  isMenuOpen={isMenuOpen}/>} />
           <Route path="/login-dropdown" element={<SecurityInputDropdown />} />
+          <Route path="/account-dashboard" element={<AccountDashboard isMenuOpen={isMenuOpen} userType="pin" userValue="1234" />} />
+          {/* 
+<Route path="/transaction-form" element={<TransactionForm  isMenuOpen={isMenuOpen}/>} />
+<Route path="/send-money" element={<SendMoney />} />
+*/}
+
           <Route path="*" element={<HomePage />} />
         </Routes>
       </div>
-    </Provider>
   );
 }
 

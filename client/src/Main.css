@@ -61,7 +61,8 @@
   .open_account,
   .account-dashboard,
   .transaction-form,
-  .login-dropdown
+  .login-dropdown,
+  .sendMoney
   {
     position: relative;
     font-family: var(  --fontFamilyMacondo);
@@ -84,7 +85,8 @@
     transform: translateX(-50%);
     color: rgb(46, 2, 45);
     font-weight: var(--fwThin);
-    width: var(--width);
+    width: fit-content;
+    padding: .5rem;
     text-align: center;
   }
 

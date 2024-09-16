@@ -1,0 +1,44 @@
+2024-09-16 17:12:12 info: Server is running on port 5000
+2024-09-16 17:12:12 info: MongoDB connection successful
+2024-09-16 17:12:12 info: Connected to database:
+2024-09-16 17:29:12 info: Login attempt: PIN: undefined, Password: undefined
+2024-09-16 17:29:12 warn: User not found: PIN: undefined
+2024-09-16 18:21:45 info: Server is running on port 5000
+2024-09-16 18:21:45 info: MongoDB connection successful
+2024-09-16 18:21:45 info: Connected to database:
+2024-09-16 19:03:47 info: Login attempt: PIN: 4539, Password: alubankudi
+2024-09-16 19:03:48 info: Login successful for PIN: 4539
+2024-09-16 19:10:06 info: Login attempt: PIN: undefined, Password: undefined
+2024-09-16 19:10:06 warn: User not found: PIN: undefined
+2024-09-16 19:10:08 info: Login attempt: PIN: undefined, Password: undefined
+2024-09-16 19:10:08 warn: User not found: PIN: undefined
+2024-09-16 19:11:22 info: Login attempt: PIN: undefined, Password: undefined
+2024-09-16 19:11:22 warn: User not found: PIN: undefined
+2024-09-16 19:11:24 info: Login attempt: PIN: undefined, Password: undefined
+2024-09-16 19:11:24 warn: User not found: PIN: undefined
+2024-09-16 19:15:24 info: Server is running on port 5000
+2024-09-16 19:15:24 info: MongoDB connection successful
+2024-09-16 19:15:24 info: Connected to database:
+2024-09-16 19:40:47 info: Server is running on port 5000
+2024-09-16 19:40:47 info: MongoDB connection successful
+2024-09-16 19:40:47 info: Connected to database:
+2024-09-16 19:50:04 info: Server is running on port 5000
+2024-09-16 19:50:04 info: MongoDB connection successful
+2024-09-16 19:50:04 info: Connected to database:
+2024-09-16 19:50:28 info: Server is running on port 5000
+2024-09-16 19:50:28 info: MongoDB connection successful
+2024-09-16 19:50:28 info: Connected to database:
+2024-09-16 20:01:46 info: Received POST request for /login
+2024-09-16 20:02:20 info: Received POST request for /login
+2024-09-16 20:09:02 info: Received POST request for /login
+2024-09-16 20:11:54 info: Received POST request for /login
+2024-09-16 20:32:48 info: Received GET request for /main.d30665e4f70fc69a934c.hot-update.json
+2024-09-16 20:32:48 info: Received GET request for /main.d30665e4f70fc69a934c.hot-update.json
+2024-09-16 20:33:19 info: Received POST request for /login
+2024-09-16 20:59:45 info: Login attempt using PIN: 4539
+2024-09-16 20:59:45 info: Login successful
+2024-09-16 21:00:59 info: Server is running on port 5000
+2024-09-16 21:00:59 info: MongoDB connection successful
+2024-09-16 21:00:59 info: Connected to database:
+2024-09-16 21:01:24 info: Login attempt using PIN: 8901
+2024-09-16 21:01:25 info: Login successful
