@@ -42,3 +42,19 @@
 2024-09-16 21:00:59 info: Connected to database:
 2024-09-16 21:01:24 info: Login attempt using PIN: 8901
 2024-09-16 21:01:25 info: Login successful
+2024-09-17 00:16:16 info: Server is running on port 5000
+2024-09-17 00:16:16 info: MongoDB connection successful
+2024-09-17 00:16:16 info: Connected to database:
+2024-09-17 00:17:27 info: Received GET request for /favicon.ico
+2024-09-17 00:21:59 info: Received GET request for /favicon.ico
+2024-09-17 00:22:28 info: Login attempt using PIN: 6157
+2024-09-17 00:22:28 info: Login successful
+2024-09-17 00:44:28 info: Server is running on port 5000
+2024-09-17 00:44:28 info: MongoDB connection successful
+2024-09-17 00:44:28 info: Connected to database:
+2024-09-17 00:53:12 info: Login attempt using PIN: 6157
+2024-09-17 00:53:12 info: Login successful
+2024-09-17 01:00:59 info: Login attempt using PIN: 4539
+2024-09-17 01:00:59 info: Login successful
+2024-09-17 01:23:16 info: Login attempt using PIN: 8901
+2024-09-17 01:23:16 info: Login successful

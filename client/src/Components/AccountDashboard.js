@@ -1,6 +1,6 @@
 // src/Components/AccountDashboard.js
 import React from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector to access Redux store
+import { useSelector } from 'react-redux';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaPaperPlane, FaInbox, FaFileInvoiceDollar, FaEllipsisH } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
@@ -8,7 +8,14 @@ import '../css/accountDashboard.css';
 
 const AccountDashboard = () => {
   // Access user data from Redux store
-  const { user } = useSelector((state) => state.auth); // Adjust state path if necessary
+  const { userInfo } = useSelector((state) => state.user || {});
+
+  // Access the 'user' object from userInfo
+  const user = userInfo?.user || {}; // Fallback to empty object if userInfo or user is undefined
+
+  if (!userInfo || !user.fullname) {
+    return <div>Please log in to view your dashboard.</div>;
+  }
 
   // Features array for navigation
   const features = [
@@ -39,9 +46,9 @@ const AccountDashboard = () => {
       <Card className="user-info-card mt-4">
         <Card.Body>
           {/* Display user information from Redux store */}
-          <h3 className="user-name">{user?.fullname || "Account Holder Name"}</h3>
-          <p className="account-number">Account Number: {user?.accountNumber || "***786"}</p>
-          <p className="account-balance">Current Balance: ₦{user?.currentBalance || "--,--"}</p>
+          <h3 className="user-name">{user.fullname || "Account Holder Name"}</h3>
+          <p className="account-number">Account Number: {user.accountNumber || "***786"}</p>
+          <p className="account-balance">Current Balance: ₦{user.currentBalance || "--,--"}</p>
         </Card.Body>
       </Card>
     </Container>

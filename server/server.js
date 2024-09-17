@@ -42,6 +42,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+
 // Start the server
 app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);
