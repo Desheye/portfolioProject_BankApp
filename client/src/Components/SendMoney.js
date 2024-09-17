@@ -1,99 +1,125 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import "../css/sendMoney.css";
+import {
+  setAccountNumber,
+  setAmount,
+  setCurrency,
+  setTransferMethod,
+  setMemo,
+  fetchRecipientName,
+  submitTransaction,
+} from "../store/actions/transactionActions";
 
+
+/**
+ * SendMoney component
+ */
 const SendMoney = () => {
-  const [accountNumber, setAccountNumber] = useState('');
-  const [recipientName, setRecipientName] = useState('');
-  const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('NGR');
-  const [transferMethod, setTransferMethod] = useState('instant');
-  const [memo, setMemo] = useState('');
+  const dispatch = useDispatch();
+
+  // State to handle confirmation display
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  useEffect(() => {
-    const fetchRecipientName = async () => {
-      if (accountNumber.length >= 10) { // Assuming account numbers are at least 10 digits
-        try {
-          // Replace this with an actual API call in a real application
-          const response = await fetch(`https://api.example.com/recipient-name/${accountNumber}`);
-          const data = await response.json();
-          setRecipientName(data.name);
-        } catch (error) {
-          setRecipientName('Recipient not found');
-        }
-      } else {
-        setRecipientName('');
-      }
-    };
+  // Use separate selectors for each piece of state
+  const accountNumber = useSelector((state) => state.transaction?.accountNumber || "");
+  const recipientName = useSelector((state) => state.transaction?.recipientName || "");
+  const amount = useSelector((state) => state.transaction?.amount || "");
+  const currency = useSelector((state) => state.transaction?.currency || "NGR");
+  const transferMethod = useSelector((state) => state.transaction?.transferMethod || "instant");
+  const memo = useSelector((state) => state.transaction?.memo || "");
+  const transactionStatus = useSelector((state) => state.transaction?.transactionStatus || "");
 
-    fetchRecipientName();
-  }, [accountNumber]);
+  console.log("Transaction Status:", transactionStatus);
+
+  useEffect(() => {
+    if (accountNumber) {
+      dispatch(fetchRecipientName(accountNumber));
+    }
+  }, [accountNumber, dispatch]);
+
+  const handleAccountNumberChange = (e) => {
+    const value = e.target.value;
+    dispatch(setAccountNumber(value)); // Dispatch action to set the account number
+    console.log("Account Number changed to:", value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically handle the actual money transfer logic
-    setShowConfirmation(true);
-  };
-
-  const handleAccountNumberChange = (e) => {
-    const newAccountNumber = e.target.value;
-    setAccountNumber(newAccountNumber);
-    
-    // Reset recipient name when account number changes
-    setRecipientName('');
+    const transactionDetails = {
+      accountNumber,
+      recipientName,
+      amount,
+      currency,
+      transferMethod,
+      memo,
+    };
+    dispatch(submitTransaction(transactionDetails));
+    setShowConfirmation(true); // Show confirmation after submitting
+    console.log("Transaction submitted:", transactionDetails);
   };
 
   return (
-    <div className="container">
-      <div className="form">
-        <h2 className="title">Send Money</h2>
-        
-        {showConfirmation ? (
-          <div className="alert">
-            <div className="alertTitle">Success!</div>
-            <div>
-              Your transfer of {amount} {currency} to {recipientName} has been initiated.
-            </div>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="inputGroup">
-              <label htmlFor="accountNumber" className="label">Recipient Account Number</label>
-              <input
-                type="text"
-                id="accountNumber"
-                value={accountNumber}
-                onChange={handleAccountNumberChange}
-                className="input"
-                required
-              />
-            </div>
+    <div className="send-money-container">
+      <h2 className="send-money-title">Send Money</h2>
 
-            {accountNumber && (
-              <div className="inputGroup">
-                <label className="label">Recipient Name</label>
-                <div className="recipientName">{recipientName || 'Searching...'}</div>
+      {showConfirmation ? (
+        <div className="send-money-alert">
+          <div className="send-money-alert-title">Success!</div>
+          <div>
+            Your transfer of {amount} {currency} to {recipientName} has been initiated.
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="send-money-form">
+          <div className="send-money-form-group">
+            <label htmlFor="accountNumber" className="send-money-label">
+              Recipient Account Number
+            </label>
+            <input
+              type="text"
+              id="accountNumber"
+              value={accountNumber}
+              onChange={handleAccountNumberChange}
+              className="send-money-input"
+              required
+            />
+          </div>
+
+          {accountNumber && (
+            <div className="send-money-form-group">
+              <label className="send-money-label">Recipient Name</label>
+              <div className="send-money-recipient-name">
+                {recipientName || "Searching..."}
               </div>
-            )}
-            
-            <div className="inputGroup">
-              <label htmlFor="amount" className="label">Amount</label>
-              <input
-                type="number"
-                id="amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="input"
-                required
-              />
             </div>
-            
-            <div className="inputGroup">
-              <label htmlFor="currency" className="label">Currency</label>
+          )}
+
+          <div className="send-money-form-group">
+            <label htmlFor="amount" className="send-money-label">
+              Amount
+            </label>
+            <input
+              type="number"
+              id="amount"
+              value={amount}
+              onChange={(e) => dispatch(setAmount(e.target.value))}
+              className="send-money-input"
+              required
+            />
+          </div>
+
+          <div className="select-group">
+            <div className="send-money-form-group">
+              <label htmlFor="currency" className="send-money-label">
+                Currency
+              </label>
               <select
                 id="currency"
                 value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                className="select"
+                onChange={(e) => dispatch(setCurrency(e.target.value))}
+                className="send-money-select"
               >
                 <option>NGR</option>
                 <option>USD</option>
@@ -101,38 +127,50 @@ const SendMoney = () => {
                 <option>GBP</option>
               </select>
             </div>
-            
-            <div className="inputGroup">
-              <label htmlFor="transferMethod" className="label">Transfer Method</label>
+
+            <div className="send-money-form-group">
+              <label htmlFor="transferMethod" className="send-money-label">
+                Transfer Method
+              </label>
               <select
                 id="transferMethod"
                 value={transferMethod}
-                onChange={(e) => setTransferMethod(e.target.value)}
-                className="select"
+                onChange={(e) => dispatch(setTransferMethod(e.target.value))}
+                className="send-money-select"
               >
                 <option value="instant">Instant Transfer</option>
                 <option value="scheduled">Scheduled Transfer</option>
                 <option value="recurring">Recurring Transfer</option>
               </select>
             </div>
-            
-            <div className="inputGroup">
-              <label htmlFor="memo" className="label">Memo (Optional)</label>
-              <input
-                type="text"
-                id="memo"
-                value={memo}
-                onChange={(e) => setMemo(e.target.value)}
-                className="input"
-              />
-            </div>
-            
-            <button type="submit" className="button" disabled={!recipientName}>
-              Send Money
-            </button>
-          </form>
-        )}
-      </div>
+          </div>
+
+          <div className="send-money-form-group">
+            <label htmlFor="memo" className="send-money-label">
+              Memo (Optional)
+            </label>
+            <input
+              type="text"
+              id="memo"
+              value={memo}
+              onChange={(e) => dispatch(setMemo(e.target.value))}
+              className="send-money-input"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="send-money-button"
+            disabled={!recipientName}
+          >
+            Send Money
+          </button>
+        </form>
+      )}
+
+      <Link to="/account" className="send-money-link">
+        <h3 className="send-money-back">Go Back To Accounts</h3>
+      </Link>
     </div>
   );
 };

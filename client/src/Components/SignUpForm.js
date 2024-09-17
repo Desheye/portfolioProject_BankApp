@@ -1,7 +1,7 @@
 // src/Components/SignUpForm.js
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signupUser } from '../actions/userActions';
+import { signupUser } from '../store/actions/userActions';
 import { Link } from 'react-router-dom';
 import SignUpSuccessModal from './SignUpSuccessModal';
 import "../css/signUpForm.css";

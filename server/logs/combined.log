@@ -58,3 +58,138 @@
 2024-09-17 01:00:59 info: Login successful
 2024-09-17 01:23:16 info: Login attempt using PIN: 8901
 2024-09-17 01:23:16 info: Login successful
+2024-09-17 01:27:06 info: Login attempt using PIN: 4539
+2024-09-17 01:27:06 info: Login successful
+2024-09-17 08:52:33 info: Server is running on port 5000
+2024-09-17 08:52:33 info: MongoDB connection successful
+2024-09-17 08:52:33 info: Connected to database:
+2024-09-17 08:54:29 info: Received GET request for /favicon.ico
+2024-09-17 08:54:32 info: Received GET request for /favicon.ico
+2024-09-17 08:54:38 info: Received GET request for /favicon.ico
+2024-09-17 08:54:43 info: Received GET request for /favicon.ico
+2024-09-17 08:55:42 info: Received GET request for /favicon.ico
+2024-09-17 08:57:05 info: Received GET request for /favicon.ico
+2024-09-17 08:57:05 info: Received GET request for /favicon.ico
+2024-09-17 09:06:15 info: Received GET request for /favicon.ico
+2024-09-17 09:14:49 info: Received GET request for /favicon.ico
+2024-09-17 09:15:20 info: Received GET request for /favicon.ico
+2024-09-17 09:16:17 info: Received GET request for /favicon.ico
+2024-09-17 09:16:50 info: Received GET request for /favicon.ico
+2024-09-17 09:17:56 info: Received GET request for /favicon.ico
+2024-09-17 09:18:31 info: Received GET request for /favicon.ico
+2024-09-17 09:23:57 info: Received GET request for /favicon.ico
+2024-09-17 09:52:33 info: Received GET request for /favicon.ico
+2024-09-17 09:53:06 info: Received GET request for /favicon.ico
+2024-09-17 09:53:27 info: Received GET request for /favicon.ico
+2024-09-17 09:53:31 info: Received GET request for /favicon.ico
+2024-09-17 10:01:32 info: Received GET request for /favicon.ico
+2024-09-17 10:02:10 info: Received GET request for /favicon.ico
+2024-09-17 10:04:51 info: Received GET request for /favicon.ico
+2024-09-17 10:05:47 info: Received GET request for /favicon.ico
+2024-09-17 10:05:51 info: Received GET request for /favicon.ico
+2024-09-17 10:05:53 info: Received GET request for /favicon.ico
+2024-09-17 10:06:13 info: Login attempt using PIN: 6886
+2024-09-17 10:06:13 info: Login successful
+2024-09-17 10:06:14 info: Received GET request for /favicon.ico
+2024-09-17 10:06:25 info: Received GET request for /favicon.ico
+2024-09-17 10:07:19 info: Received GET request for /favicon.ico
+2024-09-17 10:07:34 info: Received GET request for /favicon.ico
+2024-09-17 10:45:11 info: Received GET request for /favicon.ico
+2024-09-17 10:46:06 info: Received GET request for /favicon.ico
+2024-09-17 10:55:06 info: Received GET request for /favicon.ico
+2024-09-17 10:55:08 info: Received GET request for /favicon.ico
+2024-09-17 10:55:22 info: Login attempt using PIN: 8901
+2024-09-17 10:55:22 info: Login successful
+2024-09-17 10:55:23 info: Received GET request for /favicon.ico
+2024-09-17 10:55:30 info: Received GET request for /favicon.ico
+2024-09-17 10:56:57 info: Received GET request for /favicon.ico
+2024-09-17 10:56:59 info: Received GET request for /favicon.ico
+2024-09-17 10:57:18 info: Received GET request for /favicon.ico
+2024-09-17 11:04:57 info: Received GET request for /favicon.ico
+2024-09-17 11:09:17 info: Received GET request for /favicon.ico
+2024-09-17 11:10:18 info: Received GET request for /favicon.ico
+2024-09-17 11:10:32 info: Received GET request for /favicon.ico
+2024-09-17 11:11:02 info: Received GET request for /favicon.ico
+2024-09-17 11:11:49 info: Received GET request for /favicon.ico
+2024-09-17 11:14:34 info: Received GET request for /favicon.ico
+2024-09-17 11:17:00 info: Received GET request for /favicon.ico
+2024-09-17 12:29:18 info: Server is running on port 5000
+2024-09-17 12:29:18 info: MongoDB connection successful
+2024-09-17 12:29:18 info: Connected to database:
+2024-09-17 13:27:56 info: Received GET request for /favicon.ico
+2024-09-17 13:30:38 info: Received GET request for /favicon.ico
+2024-09-17 14:06:47 info: Received GET request for /favicon.ico
+2024-09-17 14:06:49 info: Received GET request for /favicon.ico
+2024-09-17 14:07:02 info: Login attempt using PIN: 8901
+2024-09-17 14:07:03 info: Login successful
+2024-09-17 14:07:03 info: Received GET request for /favicon.ico
+2024-09-17 14:07:06 info: Received GET request for /favicon.ico
+2024-09-17 14:40:15 info: Server is running on port 5000
+2024-09-17 14:40:15 info: MongoDB connection successful
+2024-09-17 14:40:15 info: Connected to database:
+2024-09-17 14:41:52 info: Server is running on port 5000
+2024-09-17 14:41:52 info: MongoDB connection successful
+2024-09-17 14:41:52 info: Connected to database:
+2024-09-17 14:43:21 info: Server is running on port 5000
+2024-09-17 14:43:21 info: MongoDB connection successful
+2024-09-17 14:43:21 info: Connected to database:
+2024-09-17 14:45:50 info: Server is running on port 5000
+2024-09-17 14:45:51 info: MongoDB connection successful
+2024-09-17 14:45:51 info: Connected to database:
+2024-09-17 15:00:04 info: Received GET request for /favicon.ico
+2024-09-17 15:31:30 info: Received GET request for /favicon.ico
+2024-09-17 15:32:22 info: Received GET request for /favicon.ico
+2024-09-17 15:53:06 info: Received GET request for /favicon.ico
+2024-09-17 15:53:08 info: Received GET request for /favicon.ico
+2024-09-17 15:57:01 info: Received GET request for /api/recipient/6242942972
+2024-09-17 16:00:35 info: Server is running on port 5000
+2024-09-17 16:00:36 info: MongoDB connection successful
+2024-09-17 16:00:36 info: Connected to database:
+2024-09-17 16:00:48 info: Server is running on port 5000
+2024-09-17 16:00:48 info: MongoDB connection successful
+2024-09-17 16:00:48 info: Connected to database:
+2024-09-17 16:03:47 info: Server is running on port 5000
+2024-09-17 16:03:47 info: MongoDB connection successful
+2024-09-17 16:03:47 info: Connected to database:
+2024-09-17 16:04:29 info: Server is running on port 5000
+2024-09-17 16:04:29 info: MongoDB connection successful
+2024-09-17 16:04:29 info: Connected to database:
+2024-09-17 16:04:39 info: Received GET request for /api/recipient/624294297
+2024-09-17 16:04:39 info: Received GET request for /api/recipient/6242942972
+2024-09-17 16:06:02 info: Received GET request for /favicon.ico
+2024-09-17 16:06:35 info: Received GET request for /favicon.ico
+2024-09-17 16:06:37 info: Received GET request for /favicon.ico
+2024-09-17 16:06:41 info: Received GET request for /favicon.ico
+2024-09-17 16:06:55 info: Login attempt using PIN: 4539
+2024-09-17 16:06:55 info: Login successful
+2024-09-17 16:06:56 info: Received GET request for /favicon.ico
+2024-09-17 16:07:00 info: Received GET request for /favicon.ico
+2024-09-17 16:07:32 info: Received GET request for /api/recipient/4303163959
+2024-09-17 16:17:19 info: Server is running on port 5000
+2024-09-17 16:17:19 info: MongoDB connection successful
+2024-09-17 16:17:19 info: Connected to database:
+2024-09-17 16:20:23 info: Server is running on port 5000
+2024-09-17 16:20:23 info: MongoDB connection successful
+2024-09-17 16:20:23 info: Connected to database:
+2024-09-17 16:21:07 info: Server is running on port 5000
+2024-09-17 16:21:07 info: MongoDB connection successful
+2024-09-17 16:21:07 info: Connected to database:
+2024-09-17 16:39:38 info: Received GET request for /api/recipient/430316395
+2024-09-17 16:39:40 info: Received GET request for /api/recipient/4303163959
+2024-09-17 16:41:57 info: Received GET request for /favicon.ico
+2024-09-17 16:42:00 info: Received GET request for /favicon.ico
+2024-09-17 16:43:15 info: Received GET request for /favicon.ico
+2024-09-17 16:43:32 info: Received GET request for /api/recipient-name/4303163959
+2024-09-17 16:43:50 info: Received GET request for /favicon.ico
+2024-09-17 16:43:54 info: Received GET request for /favicon.ico
+2024-09-17 16:43:57 info: Received GET request for /favicon.ico
+2024-09-17 16:43:59 info: Received GET request for /favicon.ico
+2024-09-17 16:44:01 info: Received GET request for /favicon.ico
+2024-09-17 16:44:17 info: Login attempt using PIN: 4539
+2024-09-17 16:44:18 info: Login successful
+2024-09-17 16:44:18 info: Received GET request for /favicon.ico
+2024-09-17 16:44:21 info: Received GET request for /favicon.ico
+2024-09-17 16:44:23 info: Received GET request for /api/recipient-name/4303163959
+2024-09-17 17:07:00 info: Server is running on port 5000
+2024-09-17 17:07:00 info: MongoDB connection successful
+2024-09-17 17:07:00 info: Connected to database:

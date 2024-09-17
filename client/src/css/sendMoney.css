@@ -1,75 +1,120 @@
-.sendMoney {
+.send-money-container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
-  width: 100%;
-  background-color: #f3f4f6;
-  border: 2px solid red;
+  align-items: center;
+  height: 100vh;
+  width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.form {
-  width: 100%;
-  max-width: 400px;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 0.5rem;
+.send-money-form {
+  width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fcf0f0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: bold;
+.send-money-title {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-.inputGroup {
-  margin-bottom: 1rem;
+.send-money-form-group {
+  margin-bottom: 15px;
+  width: 100%;
 }
 
-.label {
+.select-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.select-group .send-money-form-group {
+  width: 48%;
+  margin-bottom: 0;
+}
+
+.send-money-label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.input {
+.send-money-input,
+.send-money-select {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
+  padding: .3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-.select {
+.send-money-recipient-name {
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  background-color: white;
+  box-sizing: border-box;
 }
 
-.button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #4f46e5;
+.send-money-button {
+  display: block;
+  width: fit-content;
+  padding: .5rem 1rem;
+  background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  border-radius: .2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 20px auto 0;
 }
 
-.alert {
-  padding: 1rem;
-  background-color: #e0f2fe;
-  border-radius: 0.25rem;
-  margin-bottom: 1rem;
+.send-money-button:hover {
+  background-color: #0056b3;
 }
 
-.alertTitle {
+.send-money-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.send-money-alert {
+  width: 100%;
+  padding: 15px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.send-money-alert-title {
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 5px;
+}
+
+.send-money-link {
+  text-decoration: none;
+  color: #007bff;
+  margin-top: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.send-money-back {
+  text-align: center;
 }

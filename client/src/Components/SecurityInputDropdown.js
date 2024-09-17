@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Dropdown, Button, Form, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../actions/userActions'; // Import the login action
+import { loginUser } from '../store/actions/userActions';
 import { Link } from 'react-router-dom';
 import "../css/inputDropdown.css";
 

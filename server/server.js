@@ -7,6 +7,7 @@ const morgan = require('morgan');
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
 // Import Winston Logger
 const logger = require('./utils/logger'); // Import the logger
@@ -28,13 +29,16 @@ mongoose.connect(process.env.DB_URL)
     logger.info('MongoDB connection successful');
     logger.info('Connected to database:', mongoose.connection.name);
   })
-  .catch((err) => logger.error('MongoDB connection error:', err));
+  .catch((err) => {
+    logger.error('MongoDB connection error:', err);
+  });
 
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Use routes
 app.use('/api/users', userRoutes);
+app.use('/api/users', transactionRoutes);
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {

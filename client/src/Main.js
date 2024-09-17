@@ -6,7 +6,7 @@ import SignUpForm from './Components/SignUpForm';
 import AccountDashboard from './Components/AccountDashboard';
 //import TransactionForm from './Components/TransactionForm';
 import SecurityInputDropdown from './Components/SecurityInputDropdown';
-//import SendMoney from './Components/SendMoney';
+import SendMoney from './Components/SendMoney';
 
 import HomePage from './Pages/HomePage';
 import AboutPage from './Pages/AboutPage';
@@ -41,9 +41,9 @@ function Main() {
           <Route path="/open_account" element={<SignUpForm />} />
           <Route path="/login-dropdown" element={<SecurityInputDropdown />} />
           <Route path="/account-dashboard" element={<AccountDashboard isMenuOpen={isMenuOpen} userType="pin" userValue="1234" />} />
+          <Route path="/send-money" element={<SendMoney />} />
           {/* 
 <Route path="/transaction-form" element={<TransactionForm  isMenuOpen={isMenuOpen}/>} />
-<Route path="/send-money" element={<SendMoney />} />
 */}
 
           <Route path="*" element={<HomePage />} />
