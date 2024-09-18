@@ -1,105 +1,88 @@
-/* Container for the entire form */
+/* Parent div occupying full width and height */
 .send-money-container {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
+  justify-content: center; /* Centers on x-axis */
+  align-items: center; /* Centers on y-axis */
+}
+.send-money-grid{
+  width: 500px;
+  padding: .5rem;
+  background-color: #f0f0f0;
 }
 
-/* Title of the form */
-.send-money-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-/* Form itself */
+/* Form container with 500px width */
 .send-money-form {
-  width: 100%;
-  max-width: 500px; /* Fixed width */
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  background-color: #f9f9f9; /* Light background for form */
   padding: 20px;
-  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
-/* Form group for spacing between fields */
+/* General styling for form groups */
 .send-money-form-group {
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Labels for form inputs */
+/* Labels */
 .send-money-label {
-  display: block;
+  font-size: 16px;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 500;
+  color: #333;
 }
 
 /* Input fields */
-.send-money-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-/* Select dropdowns */
+.send-money-input,
 .send-money-select {
-  width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-/* Button styles */
+/* Style for select inputs */
+.send-money-select {
+  background-color: white;
+}
+
+/* Submit button styling */
 .send-money-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #4caf50; /* Green background */
+  color: white;
+  padding: 12px;
+  font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  width: 100%;
 }
 
-.send-money-button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
+.send-money-button:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
 
-.send-money-button:hover:not(:disabled) {
-  background-color: #0056b3;
+/* Recipient name display */
+.send-money-recipient-name {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }
 
-/* Alert for confirmation */
-.send-money-alert {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 4px;
-  padding: 20px;
-  margin-bottom: 20px;
-  color: #155724;
+/* For groupings like currency and transfer method */
+.select-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.send-money-alert-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* Link to go back */
-.send-money-link {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 16px;
-}
-
-.send-money-back {
-  margin-top: 20px;
+.select-group .send-money-form-group {
+  flex: 1;
 }

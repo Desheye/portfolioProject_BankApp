@@ -11,7 +11,6 @@ import {
   TRANSACTION_FAILURE
 } from '../actions/transactionActions';
 
-// Initial state of the transaction reducer
 const initialState = {
   accountNumber: '',
   amount: '',
@@ -26,6 +25,7 @@ const initialState = {
 
 /**
  * Reducer function to handle transaction-related actions.
+ * 
  * @param {Object} state - The current state of the transaction reducer.
  * @param {Object} action - The dispatched action with type and payload.
  * @returns {Object} - The new state after applying the action.
@@ -34,11 +34,11 @@ const transactionReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ACCOUNT_NUMBER:
       return { ...state, accountNumber: action.payload };
-      case 'SET_RECIPIENT_ACCOUNT_NUMBER':
-        return {
-          ...state,
-          recipientAccountNumber: action.payload
-        };
+    case 'SET_RECIPIENT_ACCOUNT_NUMBER':
+      return {
+        ...state,
+        recipientAccountNumber: action.payload
+      };
     case SET_AMOUNT:
       return { ...state, amount: action.payload };
     case SET_CURRENCY:
