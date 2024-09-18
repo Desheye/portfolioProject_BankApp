@@ -1,72 +1,73 @@
-import React, { useState, useEffect } from "react";
-import { fetchRecipientName, submitTransaction } from '../api/transactionApi';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 import '../css/sendMoney.css';
 
-const SendMoneyForm = () => {
-  const [accountNumber, setAccountNumber] = useState("");
-  const [recipientName, setRecipientName] = useState("");
-  const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState("NGR");
-  const [transferMethod, setTransferMethod] = useState("instant");
-  const [memo, setMemo] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [transactionStatus, setTransactionStatus] = useState(null); // To display success or error message
+const SendMoney = () => {
+  // Access user data from Redux store
+  const { userInfo } = useSelector((state) => state.user || {});
+  const senderAccountNumber = userInfo?.user?.accountNumber; // Sender's account number from Redux
 
+  // Local state variables
+  const [accountNumber, setAccountNumber] = useState('');
+  const [recipientName, setRecipientName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState('NGR');
+  const [transferMethod, setTransferMethod] = useState('instant');
+  const [memo, setMemo] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [transactionStatus, setTransactionStatus] = useState(null);
+
+  // Handle changes to recipient account number
   const handleAccountNumberChange = (event) => {
     setAccountNumber(event.target.value);
   };
 
+  // Fetch recipient name when account number is valid (10 digits)
   useEffect(() => {
     if (accountNumber.length === 10) {
       setIsLoading(true);
-      setError("");
-      fetchRecipientName(accountNumber)
-        .then((data) => {
-          // Log data to ensure `fullname` exists in the response
-          console.debug('Recipient fetched:', data);
-          setRecipientName(data.fullname); // Ensure `data.fullname` is correct
+      setError('');
+      // Fetch recipient name based on account number
+      axios
+        .get(`/api/users/get-recipient/${accountNumber}`)
+        .then((response) => {
+          setRecipientName(response.data.fullname);
+          setIsLoading(false);
         })
-        .catch((err) => {
-          setError("Recipient not found");
-        })
-        .finally(() => {
+        .catch(() => {
+          setError('Recipient not found');
           setIsLoading(false);
         });
-    } else {
-      setRecipientName("");
     }
   }, [accountNumber]);
-  
 
+  // Handle form submission to send money
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
     const transactionDetails = {
-      accountNumber,
+      senderAccountNumber,
+      recipientAccountNumber: accountNumber,
       fullname: recipientName,
-      //fullname, 
-      amount,
+      amount: parseFloat(amount),
       currency,
       transferMethod,
       memo,
     };
-  
+
     try {
-      console.debug('Attempting to submit transaction with:', transactionDetails);
-      const response = await submitTransaction(transactionDetails);
-      console.debug('Transaction successful:', response);
+      await axios.post('/api/users/submit-transaction', transactionDetails);
       setTransactionStatus('Transaction successful!');
-    } catch (error) {
-      console.error('Transaction failed:', error);
+    } catch {
       setTransactionStatus('Transaction failed. Please try again.');
     }
   };
-  
 
   return (
     <form onSubmit={handleSubmit} className="send-money-container">
       <div className="send-money-grid">
+        {/* Recipient Account Number Input */}
         <div className="send-money-form-group">
           <label htmlFor="recipientAccountNumber" className="send-money-label">
             Recipient Account Number
@@ -77,17 +78,22 @@ const SendMoneyForm = () => {
             className="send-money-input"
             value={accountNumber}
             onChange={handleAccountNumberChange}
+            placeholder="Recipient Account Number"
             required
           />
         </div>
 
+        {/* Display Recipient Name or Error */}
         <div className="send-money-form-group">
           <label className="send-money-label">Recipient Name</label>
           <div className="send-money-recipient-name">
-            {isLoading ? "Searching..." : recipientName || error || "Enter a valid account number"}
+            {isLoading
+              ? 'Searching...'
+              : recipientName || error || 'Enter a valid account number'}
           </div>
         </div>
 
+        {/* Amount Input */}
         <div className="send-money-form-group">
           <label htmlFor="amount" className="send-money-label">
             Amount
@@ -102,6 +108,7 @@ const SendMoneyForm = () => {
           />
         </div>
 
+        {/* Currency and Transfer Method Selection */}
         <div className="select-group">
           <div className="send-money-form-group">
             <label htmlFor="currency" className="send-money-label">
@@ -113,10 +120,10 @@ const SendMoneyForm = () => {
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
             >
-              <option>NGR</option>
-              <option>USD</option>
-              <option>EUR</option>
-              <option>GBP</option>
+              <option value="NGR">NGR</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
             </select>
           </div>
 
@@ -137,6 +144,7 @@ const SendMoneyForm = () => {
           </div>
         </div>
 
+        {/* Memo Input */}
         <div className="send-money-form-group">
           <label htmlFor="memo" className="send-money-label">
             Memo (Optional)
@@ -150,18 +158,18 @@ const SendMoneyForm = () => {
           />
         </div>
 
+        {/* Submit Button */}
         <button type="submit" className="send-money-button">
           Send Money
         </button>
 
+        {/* Transaction Status Display */}
         {transactionStatus && (
-          <div className="transaction-status">
-            {transactionStatus}
-          </div>
+          <div className="transaction-status">{transactionStatus}</div>
         )}
       </div>
     </form>
   );
 };
 
-export default SendMoneyForm;
+export default SendMoney;

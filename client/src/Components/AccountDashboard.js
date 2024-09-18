@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaPaperPlane, FaInbox, FaFileInvoiceDollar, FaEllipsisH } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
+import SendMoney from './SendMoney';
 import '../css/accountDashboard.css';
 
 const AccountDashboard = () => {
@@ -51,6 +52,9 @@ const AccountDashboard = () => {
           <p className="account-balance">Current Balance: ₦{user.currentBalance || "--,--"}</p>
         </Card.Body>
       </Card>
+
+      {/* Include SendMoney component and pass the senderAccountNumber */}
+      <SendMoney senderAccountNumber={user.accountNumber} />
     </Container>
   );
 };
