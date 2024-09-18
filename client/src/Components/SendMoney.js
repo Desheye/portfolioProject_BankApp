@@ -8,13 +8,14 @@ import {
   setCurrency,
   setTransferMethod,
   setMemo,
+  setRecipientAccountNumber,
   fetchRecipientName,
   submitTransaction,
 } from "../store/actions/transactionActions";
 
-
 /**
  * SendMoney component
+ * Allows users to enter account details and transfer money.
  */
 const SendMoney = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const SendMoney = () => {
   // State to handle confirmation display
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Use separate selectors for each piece of state
+  // Use selectors to access state from Redux store
   const accountNumber = useSelector((state) => state.transaction?.accountNumber || "");
   const recipientName = useSelector((state) => state.transaction?.recipientName || "");
   const amount = useSelector((state) => state.transaction?.amount || "");
@@ -30,31 +31,37 @@ const SendMoney = () => {
   const transferMethod = useSelector((state) => state.transaction?.transferMethod || "instant");
   const memo = useSelector((state) => state.transaction?.memo || "");
   const transactionStatus = useSelector((state) => state.transaction?.transactionStatus || "");
+  const recipientAccountNumber = useSelector((state) => state.transaction?.recipientAccountNumber || "");
 
+  // Log transaction status for debugging purposes
   console.log("Transaction Status:", transactionStatus);
 
   useEffect(() => {
     if (accountNumber) {
+      // Fetch recipient name from Redux or MongoDB if account number is updated
       dispatch(fetchRecipientName(accountNumber));
     }
   }, [accountNumber, dispatch]);
 
+   // eslint-disable-next-line 
   const handleAccountNumberChange = (e) => {
-    const value = e.target.value;
-    dispatch(setAccountNumber(value)); // Dispatch action to set the account number
-    console.log("Account Number changed to:", value);
-  };
+  const value = e.target.value;
+  dispatch(setAccountNumber(value)); // Dispatch action to update account number in Redux
+  console.log("Account Number changed to:", value);
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const transactionDetails = {
       accountNumber,
+      recipientAccountNumber,
       recipientName,
       amount,
       currency,
       transferMethod,
       memo,
     };
+    // Dispatch action to submit transaction
     dispatch(submitTransaction(transactionDetails));
     setShowConfirmation(true); // Show confirmation after submitting
     console.log("Transaction submitted:", transactionDetails);
@@ -74,24 +81,24 @@ const SendMoney = () => {
       ) : (
         <form onSubmit={handleSubmit} className="send-money-form">
           <div className="send-money-form-group">
-            <label htmlFor="accountNumber" className="send-money-label">
+            <label htmlFor="recipientAccountNumber" className="send-money-label">
               Recipient Account Number
             </label>
             <input
               type="text"
-              id="accountNumber"
-              value={accountNumber}
-              onChange={handleAccountNumberChange}
+              id="recipientAccountNumber"
+              value={recipientAccountNumber}
+              onChange={(e) => dispatch(setRecipientAccountNumber(e.target.value))}
               className="send-money-input"
               required
             />
           </div>
 
-          {accountNumber && (
+          {recipientAccountNumber && (
             <div className="send-money-form-group">
               <label className="send-money-label">Recipient Name</label>
               <div className="send-money-recipient-name">
-                {recipientName || "Searching..."}
+                {recipientName.fullname || "Searching..."}
               </div>
             </div>
           )}
