@@ -91,7 +91,13 @@
   right: 0;
   background-color: rgba(241, 220, 220, 0.9); /* semi-transparent background */
   padding: 10px 0;
-  z-index: 1000; /* Ensure it's above other content */
+  z-index: 1000;
+  font-family: var(--fontFamilyMacondo);
+}
+.link-container{
+  display: flex;
+  justify-content: space-between;
+  padding: 0px .5rem;
 }
 
 .back {

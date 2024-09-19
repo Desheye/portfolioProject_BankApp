@@ -815,3 +815,6 @@
 2024-09-19 15:48:50 info: Login attempt using PIN: 2168
 2024-09-19 15:48:50 info: Login successful
 2024-09-19 15:48:51 info: Received GET request for /favicon.ico
+2024-09-19 18:22:47 info: Server is running on port 5000
+2024-09-19 18:22:47 info: MongoDB connection successful
+2024-09-19 18:22:47 info: Connected to database:

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 import {
   FaPaperPlane,
   FaInbox,
@@ -120,6 +121,12 @@ const AccountDashboard = () => {
 
       {/* Include SendMoney component and pass the senderAccountNumber */}
       <SendMoney senderAccountNumber={user.accountNumber} />
+
+      <div className="back-link-container">
+        <Link to="/account" className="linktag">
+          <h3 className="back">Go Back To Accounts</h3>
+        </Link>
+      </div>
 
       {/* Logout button for session expiry on back navigation */}
       <button className="btn btn-danger mt-3" onClick={logoutAndRedirect}>
