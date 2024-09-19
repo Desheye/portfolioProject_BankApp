@@ -818,3 +818,54 @@
 2024-09-19 18:22:47 info: Server is running on port 5000
 2024-09-19 18:22:47 info: MongoDB connection successful
 2024-09-19 18:22:47 info: Connected to database:
+2024-09-19 18:52:14 info: Server is running on port 5000
+2024-09-19 18:52:14 info: MongoDB connection successful
+2024-09-19 18:52:14 info: Connected to database:
+2024-09-19 18:52:35 info: Login attempt using PIN: 2168
+2024-09-19 18:52:35 info: Login successful
+2024-09-19 18:52:35 info: Received GET request for /favicon.ico
+2024-09-19 18:52:49 info: Received GET request for /favicon.ico
+2024-09-19 18:52:53 info: Received GET request for /favicon.ico
+2024-09-19 18:52:54 info: Received GET request for /favicon.ico
+2024-09-19 18:52:55 info: Received GET request for /favicon.ico
+2024-09-19 18:56:00 info: Received GET request for /favicon.ico
+2024-09-19 18:56:48 info: Received GET request for /favicon.ico
+2024-09-19 18:56:54 info: Received GET request for /favicon.ico
+2024-09-19 18:56:56 info: Received GET request for /favicon.ico
+2024-09-19 18:57:02 info: Received GET request for /favicon.ico
+2024-09-19 18:57:05 info: Received GET request for /favicon.ico
+2024-09-19 18:57:05 info: Received GET request for /favicon.ico
+2024-09-19 18:59:17 info: Received GET request for /favicon.ico
+2024-09-19 19:00:09 info: Received GET request for /favicon.ico
+2024-09-19 19:00:14 info: Received GET request for /favicon.ico
+2024-09-19 19:00:17 info: Received GET request for /favicon.ico
+2024-09-19 19:00:17 info: Received GET request for /favicon.ico
+2024-09-19 19:00:33 info: Received GET request for /favicon.ico
+2024-09-19 19:02:18 info: Received GET request for /favicon.ico
+2024-09-19 19:02:54 info: Received GET request for /favicon.ico
+2024-09-19 19:03:02 info: Received GET request for /favicon.ico
+2024-09-19 19:03:04 info: Received GET request for /favicon.ico
+2024-09-19 19:03:04 info: Received GET request for /favicon.ico
+2024-09-19 19:03:07 info: Received GET request for /favicon.ico
+2024-09-19 19:06:44 info: Received GET request for /favicon.ico
+2024-09-19 19:07:02 info: Received GET request for /favicon.ico
+2024-09-19 19:08:22 info: Received GET request for /favicon.ico
+2024-09-19 19:08:33 info: Received GET request for /favicon.ico
+2024-09-19 19:08:40 info: Received GET request for /favicon.ico
+2024-09-19 19:08:41 info: Received GET request for /favicon.ico
+2024-09-19 19:08:42 info: Received GET request for /favicon.ico
+2024-09-19 19:08:44 info: Received GET request for /favicon.ico
+2024-09-19 19:26:46 info: Received GET request for /favicon.ico
+2024-09-19 19:26:48 info: Received GET request for /favicon.ico
+2024-09-19 19:26:48 info: Received GET request for /favicon.ico
+2024-09-19 19:26:53 info: Received GET request for /favicon.ico
+2024-09-19 19:27:32 info: Received GET request for /favicon.ico
+2024-09-19 19:27:36 info: Received GET request for /favicon.ico
+2024-09-19 19:27:37 info: Received GET request for /favicon.ico
+2024-09-19 19:28:56 info: Received GET request for /favicon.ico
+2024-09-19 19:29:01 info: Received GET request for /favicon.ico
+2024-09-19 19:29:07 info: Received GET request for /favicon.ico
+2024-09-19 19:29:10 info: Received GET request for /favicon.ico
+2024-09-19 19:29:12 info: Received GET request for /favicon.ico
+2024-09-19 19:29:13 info: Received GET request for /favicon.ico
+2024-09-19 19:29:43 info: Received GET request for /favicon.ico
