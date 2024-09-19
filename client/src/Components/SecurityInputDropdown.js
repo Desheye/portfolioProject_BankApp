@@ -2,53 +2,47 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { Dropdown, Button, Form, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../store/actions/userActions';
-import { Link } from 'react-router-dom';
 import "../css/inputDropdown.css";
 
 const SecurityInputDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // State for selected security type and input value
   const [type, setType] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [password, setPassword] = useState("");
 
-  // Use optional chaining to prevent errors if state.user is undefined
+  // Get authentication status and error from Redux store
   const { isAuthenticated, error } = useSelector((state) => state.user || {});
 
+  // Handle security type selection
   const handleTypeSelect = useCallback((selectedType) => {
     setType(selectedType);
     setInputValue("");
   }, []);
 
+  // Handle input value change
   const handleInputChange = useCallback((e) => {
     const { value } = e.target;
     setInputValue(value.trim());
   }, []);
 
-  const handlePasswordChange = useCallback((e) => {
-    const { value } = e.target;
-    setPassword(value.trim());
-  }, []);
-
+  // Handle form submission
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    if (type === "PIN" && inputValue) {
-      // Dispatch login with PIN
-      dispatch(loginUser({ pin: inputValue }));
-    } else if (type === "Password" && password) {
-      // Dispatch login with Password
-      dispatch(loginUser({ password }));
+    if (inputValue) {
+      // Dispatch login action based on security type
+      dispatch(loginUser({ [type.toLowerCase()]: inputValue }));
     } else {
-      // Handle error
-      console.error("Please provide either PIN or Password.");
+      // Handle error if no input value
+      console.error(`Please provide your ${type}.`);
     }
-  }, [dispatch, type, inputValue, password]);
-  
+  }, [dispatch, type, inputValue]);
 
+  // Get placeholder text based on selected security type
   const getPlaceholder = () => {
     switch (type) {
       case "PIN":
@@ -70,16 +64,18 @@ const SecurityInputDropdown = () => {
   return (
     <div className="login-dropdown d-flex flex-column justify-content-center align-items-center">
       <div className="dropdownGrid">
+        {/* Security type dropdown */}
         <Dropdown onSelect={handleTypeSelect}>
           <Dropdown.Toggle aria-label="Select Security Type">
             {type || "Select Security Type"}
           </Dropdown.Toggle>
-          <Dropdown.Menu className="bg-success" role="menu">
+          <Dropdown.Menu className="bg-success btndrpdwn" role="menu">
             <Dropdown.Item eventKey="PIN" aria-label="PIN">PIN</Dropdown.Item>
             <Dropdown.Item eventKey="Password" aria-label="Password">Password</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
 
+        {/* Security input form */}
         <Form onSubmit={handleSubmit} className="formInputGrid">
           <Form.Control
             type={type === "PIN" ? "number" : "password"}
@@ -89,25 +85,19 @@ const SecurityInputDropdown = () => {
             aria-label={`${type || "Security"} Input`}
             className="formInputGrid"
           />
-          {type === "Password" && (
-            <Form.Control
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={handlePasswordChange}
-              aria-label="Password Input"
-              className="formInputGrid mt-2"
-            />
-          )}
           <Button type="submit" variant="success" className="button mt-3">
             Submit
           </Button>
-
-          <Link to='/account' className='linktag'>
-            <h3 className='back'>Go Back To Accounts</h3>
-          </Link>
         </Form>
+
+        {/* Back to Accounts link */}
+        <div className="back-link-container">
+          <Link to="/account" className="linktag">
+            <h3 className="back">Go Back To Accounts</h3>
+          </Link>
+        </div>
       </div>
+      
       {/* Display error if present */}
       {error && <Alert variant="danger" role="alert">{error}</Alert>}
     </div>

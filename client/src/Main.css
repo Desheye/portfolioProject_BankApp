@@ -37,6 +37,7 @@
   background-color: var(--bgColor);
   position: fixed;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .Main-Container header {
@@ -82,14 +83,23 @@
 }
 
 /* Global Link for navigating to AccountsPage.js */
-.back {
+/* Global Link for navigating to AccountsPage.js */
+.back-link-container {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  background-color: rgba(241, 220, 220, 0.9); /* semi-transparent background */
+  padding: 10px 0;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.back {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
   color: rgb(46, 2, 45);
   font-weight: var(--fwThin);
-  width: fit-content;
   padding: 0.5rem;
   text-align: center;
 }

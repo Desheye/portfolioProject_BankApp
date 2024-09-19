@@ -1,33 +1,46 @@
 //server/models/transaction.js
+// server/models/transaction.js
 const mongoose = require('mongoose');
 
 // Define the schema for transactions
 const transactionSchema = new mongoose.Schema({
-  senderAccountNumber: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function(v) {
-        return /^[0-9]{10}$/.test(v); // Validate 10-digit number
-      },
-      message: props => `${props.value} is not a valid sender account number!`
+  sender: {
+    accountNumber: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /^[0-9]{10}$/.test(v); // Validate 10-digit account number
+        },
+        message: props => `${props.value} is not a valid sender account number!`
+      }
+    },
+    fullname: {
+      type: String,
+      required: true
     }
   },
-  recipientAccountNumber: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function(v) {
-        return /^[0-9]{10}$/.test(v); // Validate 10-digit number
-      },
-      message: props => `${props.value} is not a valid recipient account number!`
+  recipient: {
+    accountNumber: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /^[0-9]{10}$/.test(v); // Validate 10-digit account number
+        },
+        message: props => `${props.value} is not a valid recipient account number!`
+      }
+    },
+    fullname: {
+      type: String,
+      required: true
     }
   },
   amount: {
     type: Number,
     required: true,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return v > 0;
       },
       message: props => `${props.value} is not a valid transaction amount!`
@@ -58,25 +71,6 @@ const transactionSchema = new mongoose.Schema({
   }
 });
 
-// Indexes
-transactionSchema.index({ senderAccountNumber: 1 });
-transactionSchema.index({ recipientAccountNumber: 1 });
-transactionSchema.index({ status: 1 });
-
-// Add a method to update the status of a transaction
-transactionSchema.methods.updateStatus = async function(newStatus) {
-  console.debug(`Updating transaction status from ${this.status} to ${newStatus}`);
-  try {
-    this.status = newStatus;
-    await this.save();
-    console.debug('Transaction status updated successfully');
-  } catch (error) {
-    console.error('Error updating transaction status:', error);
-    throw error;
-  }
-};
-
-// Compile the model
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
 module.exports = Transaction;

@@ -8,6 +8,18 @@ export const USER_SIGNUP_FAIL = 'USER_SIGNUP_FAIL';
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
+export const USER_LOGOUT = 'USER_LOGOUT';
+
+
+// Action to handle logout
+export const logoutUser = () => (dispatch) => {
+  // Clear any user data from local storage/session storage
+  localStorage.removeItem('userInfo');
+
+  // Dispatch the logout action to Redux
+  dispatch({ type: USER_LOGOUT });
+};
+
 
 // Signup action
 export const signupUser = (userData) => async (dispatch) => {
@@ -59,15 +71,20 @@ export const loginUser = (credentials) => async (dispatch) => {
     console.log('Sending login request with data:', loginData);
 
     const response = await axios.post('/api/users/login', loginData);
-    
+
     console.log('Received login response:', response);
 
+    // Dispatch success action
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: response.data,
     });
 
     console.log('Dispatched USER_LOGIN_SUCCESS action with payload:', response.data);
+
+    // Save user data to localStorage
+    localStorage.setItem('userInfo', JSON.stringify(response.data));
+
   } catch (error) {
     console.error('Login Error:', error);
 
@@ -83,4 +100,5 @@ export const loginUser = (credentials) => async (dispatch) => {
       : error.message);
   }
 };
+
 

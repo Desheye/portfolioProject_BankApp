@@ -2,28 +2,6 @@
 const { User } = require('../models/User');
 const Transaction = require('../models/Transaction');
 
-// Controller to fetch recipient name based on account number
-const getRecipientName = async (req, res) => {
-  console.log('Recipient Name Route Hit');
-  try {
-    const { accountNumber } = req.params;
-    console.debug(`Searching for recipient with account number: ${accountNumber}`);
-
-    // Find the user with the given account number
-    const user = await User.findOne({ accountNumber });
-
-    if (user) {
-      console.debug('Recipient found:', user.fullname);
-      res.json({ fullname: user.fullname });
-    } else {
-      console.debug('Recipient not found');
-      res.status(404).json({ message: 'Recipient not found' });
-    }
-  } catch (error) {
-    console.error('Error fetching recipient name:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-};
 
 // Controller to process the transaction
 const processTransaction = async (req, res) => {
@@ -72,15 +50,23 @@ const processTransaction = async (req, res) => {
       return res.status(400).json({ message: 'Insufficient balance' });
     }
 
+    // Deduct from sender and add to recipient balance
     sender.currentBalance -= amount;
     await sender.save();
 
     recipient.currentBalance += amount;
     await recipient.save();
 
+    // Create transaction with full details for sender and recipient
     await Transaction.create({
-      senderAccountNumber: sender.accountNumber,
-      recipientAccountNumber: recipient.accountNumber,
+      sender: {
+        accountNumber: sender.accountNumber,
+        fullname: sender.fullname
+      },
+      recipient: {
+        accountNumber: recipient.accountNumber,
+        fullname: recipient.fullname
+      },
       amount,
       currency,
       transferMethod,
@@ -91,6 +77,29 @@ const processTransaction = async (req, res) => {
     res.status(200).json({ message: 'Transaction successful' });
   } catch (error) {
     console.error('Error processing transaction:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+// Controller to fetch recipient name based on account number
+const getRecipientName = async (req, res) => {
+  console.log('Recipient Name Route Hit');
+  try {
+    const { accountNumber } = req.params;
+    console.debug(`Searching for recipient with account number: ${accountNumber}`);
+
+    // Find the user with the given account number
+    const user = await User.findOne({ accountNumber });
+
+    if (user) {
+      console.debug('Recipient found:', user.fullname);
+      res.json({ fullname: user.fullname });
+    } else {
+      console.debug('Recipient not found');
+      res.status(404).json({ message: 'Recipient not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching recipient name:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };

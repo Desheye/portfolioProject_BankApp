@@ -1,18 +1,18 @@
 // src/Components/SignUpForm.js
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { signupUser } from '../store/actions/userActions';
-import { Link } from 'react-router-dom';
-import SignUpSuccessModal from './SignUpSuccessModal';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser } from "../store/actions/userActions";
+import { Link } from "react-router-dom";
+import SignUpSuccessModal from "../Modal/SignUpSuccessModal";
 import "../css/signUpForm.css";
 
 // Define the initial form state
 const initialFormState = {
-  fullname: '',
-  email: '',
-  tel: '',
-  password: '',
-  confirm_password: '',
+  fullname: "",
+  email: "",
+  tel: "",
+  password: "",
+  confirm_password: "",
 };
 
 // Create a functional component for SignUpForm
@@ -20,7 +20,7 @@ const SignUpForm = () => {
   // Create state variables for form data, show modal, error message, and reset flag
   const [formData, setFormData] = useState(initialFormState);
   const [showModal, setShowModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [shouldReset, setShouldReset] = useState(false);
 
   // Define a ref for the error message timeout
@@ -35,7 +35,7 @@ const SignUpForm = () => {
     // Reset the form data to its initial state
     setFormData(initialFormState);
     // Clear the error message
-    setErrorMessage('');
+    setErrorMessage("");
     // Set the reset flag to false
     setShouldReset(false);
   }, []);
@@ -53,7 +53,7 @@ const SignUpForm = () => {
     // Check if passwords match
     if (formData.password !== formData.confirm_password) {
       // Alert the user if passwords don't match
-      return alert('Passwords do not match');
+      return alert("Passwords do not match");
     }
     // Dispatch the signupUser action with the form data
     dispatch(signupUser(formData))
@@ -91,7 +91,7 @@ const SignUpForm = () => {
       setErrorMessage(error.message);
       // Set a timeout to hide the error message after 5 seconds
       const errorMessageTimeout = setTimeout(() => {
-        setErrorMessage('');
+        setErrorMessage("");
       }, 5000);
       errorMessageTimeoutRef.current = errorMessageTimeout;
     }
@@ -169,20 +169,20 @@ const SignUpForm = () => {
           <span>Confirm Password</span>
         </div>
 
-        <div className='submit-btn'>
-          <button className='btn' type="submit">Submit</button>
+        <div className="submit-btn">
+          <button className="btn" type="submit">
+            Submit
+          </button>
         </div>
-
-        <Link to='/account' className='linktag'>
-        <h3 className='back'>Go Back To Accounts</h3>
-      </Link>
       </form>
 
-      {errorMessage && (
-        <div className="error-message">
-          {errorMessage}
-        </div>
-      )}
+      <div className="back-link-container">
+        <Link to="/account" className="linktag">
+          <h3 className="back">Go Back To Accounts</h3>
+        </Link>
+      </div>
+
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <SignUpSuccessModal
         show={showModal}

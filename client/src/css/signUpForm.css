@@ -4,12 +4,14 @@
         justify-content: flex-start;
         align-items: center;
         padding: .5rem;
+        overflow-y: auto;
         font-family: var(--fontFamilyMacondo);
         background-color: var(--bgColorOverlay);
     }
 
     .open_account h1 {
         font-size: 1.2em;
+        font-weight: bold;
         color: #000;
         letter-spacing: 5px;
         margin-bottom: .5rem;
@@ -18,9 +20,10 @@
 
 
     form {
-        width: 600px;
+        width: 400px;
+        height: 100%;
         margin: 1rem 0px;
-        padding: 0 .5rem;
+        padding: 0 .9rem;
     }
 
     .open_account .inputbox {
