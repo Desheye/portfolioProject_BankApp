@@ -5,6 +5,13 @@ node_modules/
 /.pnp
 .pnp.js
 
+# Ignore log files
+*.log
+
+# Ignore logs directory
+logs/
+
+
 # testing
 /coverage
 

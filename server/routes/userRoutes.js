@@ -37,12 +37,12 @@ router.post('/check-user', async (req, res) => {
 
 // POST /login - Authenticate user using PIN or Password
 router.post('/login', async (req, res) => {
-  const { pin, password } = req.body;
+  const { pin, accountNumber, password } = req.body;
 
-  // Ensure that either pin or password is provided
-  if (!pin && !password) {
-    logger.warn('Login attempt failed: No PIN or Password provided');
-    return res.status(400).json({ error: 'Please provide either PIN or Password' });
+  // Ensure that either PIN or both Account Number and Password are provided
+  if (!pin && (!accountNumber || !password)) {
+    logger.warn('Login attempt failed: No PIN or Account Number and Password provided');
+    return res.status(400).json({ error: 'Please provide either PIN or both Account Number and Password' });
   }
 
   try {
@@ -60,18 +60,26 @@ router.post('/login', async (req, res) => {
       }
     }
 
-    // If password is provided, find user by password (assuming a unique password per user)
-    if (password) {
-      logger.info(`Login attempt using Password`);
-      user = await User.findOne({ password: bcrypt.hashSync(password) }); // This assumes password is stored as a hash
+    // If Account Number and Password are provided, find user by Account Number and verify Password
+    if (accountNumber && password) {
+      logger.info(`Login attempt using Account Number: ${accountNumber}`);
+      user = await User.findOne({ accountNumber });
 
+      // If user is not found by Account Number, return an error
       if (!user) {
-        logger.warn('User not found for the provided password');
+        logger.warn(`User not found for Account Number: ${accountNumber}`);
         return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Compare the provided password with the stored hashed password
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        logger.warn('Password does not match');
+        return res.status(400).json({ error: 'Invalid password' });
       }
     }
 
-    // If user is found, return user details
+    // If user is found and authentication is successful, return user details
     logger.info('Login successful');
     res.status(200).json({
       message: 'Login successful',
@@ -90,6 +98,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Error logging in user' });
   }
 });
+
 
 
 module.exports = router;

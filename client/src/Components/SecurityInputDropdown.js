@@ -11,9 +11,10 @@ const SecurityInputDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // State for selected security type and input value
-  const [type, setType] = useState("");
+  // State for selected security type and input values
+  const [type, setType] = useState(""); // Can be "PIN", "Password", or "AccountPassword"
   const [inputValue, setInputValue] = useState("");
+  const [accountNumber, setAccountNumber] = useState(""); // For Account Number + Password
 
   // Get authentication status and error from Redux store
   const { isAuthenticated, error } = useSelector((state) => state.user || {});
@@ -22,32 +23,40 @@ const SecurityInputDropdown = () => {
   const handleTypeSelect = useCallback((selectedType) => {
     setType(selectedType);
     setInputValue("");
+    setAccountNumber("");
   }, []);
 
   // Handle input value change
   const handleInputChange = useCallback((e) => {
-    const { value } = e.target;
-    setInputValue(value.trim());
+    const { name, value } = e.target;
+    if (name === "inputValue") {
+      setInputValue(value.trim());
+    } else if (name === "accountNumber") {
+      setAccountNumber(value.trim());
+    }
   }, []);
 
   // Handle form submission
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    if (inputValue) {
-      // Dispatch login action based on security type
-      dispatch(loginUser({ [type.toLowerCase()]: inputValue }));
+    if (type === "AccountPassword" && accountNumber && inputValue) {
+      // Dispatch login action for Account Number + Password
+      dispatch(loginUser({ accountNumber, password: inputValue }));
+    } else if (type === "PIN" && inputValue) {
+      // Dispatch login action for PIN
+      dispatch(loginUser({ pin: inputValue }));
     } else {
-      // Handle error if no input value
-      console.error(`Please provide your ${type}.`);
+      // Handle error if no input value or missing account number
+      console.error(`Please provide the required information for ${type}.`);
     }
-  }, [dispatch, type, inputValue]);
+  }, [dispatch, type, inputValue, accountNumber]);
 
   // Get placeholder text based on selected security type
   const getPlaceholder = () => {
     switch (type) {
       case "PIN":
         return "Enter your PIN";
-      case "Password":
+      case "AccountPassword":
         return "Enter your password";
       default:
         return "Enter your security info";
@@ -71,20 +80,45 @@ const SecurityInputDropdown = () => {
           </Dropdown.Toggle>
           <Dropdown.Menu className="bg-success btndrpdwn" role="menu">
             <Dropdown.Item eventKey="PIN" aria-label="PIN">PIN</Dropdown.Item>
-            <Dropdown.Item eventKey="Password" aria-label="Password">Password</Dropdown.Item>
+            <Dropdown.Item eventKey="AccountPassword" aria-label="Account Number + Password">Account Number + Password</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
 
         {/* Security input form */}
         <Form onSubmit={handleSubmit} className="formInputGrid">
-          <Form.Control
-            type={type === "PIN" ? "number" : "password"}
-            placeholder={getPlaceholder()}
-            value={inputValue}
-            onChange={handleInputChange}
-            aria-label={`${type || "Security"} Input`}
-            className="formInputGrid"
-          />
+          {type === "AccountPassword" && (
+            <>
+              <Form.Control
+                type="text"
+                name="accountNumber"
+                placeholder="Enter your account number"
+                value={accountNumber}
+                onChange={handleInputChange}
+                aria-label="Account Number Input"
+                className="formInputGrid"
+              />
+              <Form.Control
+                type="password"
+                name="inputValue"
+                placeholder={getPlaceholder()}
+                value={inputValue}
+                onChange={handleInputChange}
+                aria-label="Password Input"
+                className="formInputGrid"
+              />
+            </>
+          )}
+          {type === "PIN" && (
+            <Form.Control
+              type="number"
+              name="inputValue"
+              placeholder={getPlaceholder()}
+              value={inputValue}
+              onChange={handleInputChange}
+              aria-label="PIN Input"
+              className="formInputGrid"
+            />
+          )}
           <Button type="submit" variant="success" className="button mt-3">
             Submit
           </Button>

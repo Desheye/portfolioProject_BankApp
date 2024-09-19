@@ -58,6 +58,12 @@ export const signupUser = (userData) => async (dispatch) => {
 
 
 // Login action
+/*import {
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAIL
+} from '../constants/userConstants';*/
+
 export const loginUser = (credentials) => async (dispatch) => {
   console.log('loginUser action called with credentials:', credentials);
 
@@ -65,8 +71,19 @@ export const loginUser = (credentials) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
     console.log('Dispatched USER_LOGIN_REQUEST action');
 
-    const { pin, password } = credentials;
-    let loginData = pin ? { pin, password } : { password };
+    // Prepare the login data based on the provided credentials
+    let loginData;
+
+    if (credentials.pin) {
+      // If PIN is provided, send PIN only
+      loginData = { pin: credentials.pin };
+    } else if (credentials.accountNumber && credentials.password) {
+      // If Account Number and Password are provided, send both
+      loginData = { accountNumber: credentials.accountNumber, password: credentials.password };
+    } else {
+      // Handle the case where neither PIN nor Account Number + Password are provided
+      throw new Error('Invalid credentials: Please provide either PIN or Account Number with Password');
+    }
 
     console.log('Sending login request with data:', loginData);
 
@@ -100,5 +117,8 @@ export const loginUser = (credentials) => async (dispatch) => {
       : error.message);
   }
 };
+
+
+
 
 
