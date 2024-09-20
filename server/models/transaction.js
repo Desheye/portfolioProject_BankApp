@@ -1,6 +1,6 @@
-//server/models/transaction.js
-// server/models/transaction.js
+//server/Models/transaction.js
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid'); // Import the v4 function from the uuid package
 
 // Define the schema for transactions
 const transactionSchema = new mongoose.Schema({
@@ -68,6 +68,18 @@ const transactionSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  transactionId: {
+    type: String,
+    required: true,
+    default: function() {
+      return new mongoose.Types.ObjectId(); // Generate a new transaction ID
+    }
+  },
+  sessionId: {
+    type: String,
+    required: true,
+    default: uuidv4 // Generate a UUID for sessionId when a new transaction is created
   }
 });
 

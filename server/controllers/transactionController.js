@@ -104,8 +104,41 @@ const getRecipientName = async (req, res) => {
   }
 };
 
+// Get latest transaction data
+const getLatestTransaction = async (req, res) => {
+  try {
+    // Fetch the latest transaction (assuming sorting by createdAt)
+    const transaction = await Transaction.findOne().sort({ createdAt: -1 }).select({
+      'recipient.fullname': 1,
+      'recipient.accountNumber': 1,
+      transactionId: 1,
+      sessionId: 1,
+      createdAt: 1 // aliasing this to `transactionTime` on the frontend
+    });
+    
+    if (!transaction) {
+      return res.status(404).json({ message: 'No transaction found' });
+    }
+
+    // Return the transaction details in a simplified format
+    res.json({
+      recipientFullName: transaction.recipient.fullname,
+      recipientAccountNumber: transaction.recipient.accountNumber,
+      transactionId: transaction.transactionId,
+      sessionId: transaction.sessionId,
+      transactionTime: transaction.createdAt
+    });
+  } catch (error) {
+    console.error('Error fetching transaction data:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
 // Export the functions
 module.exports = {
   getRecipientName,
-  processTransaction
+  processTransaction,
+  getLatestTransaction
 };

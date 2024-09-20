@@ -7,6 +7,7 @@ import Navigate from './Components/Navigate';
 import SignUpForm from './Components/SignUpForm';
 import AccountDashboard from './Components/AccountDashboard';
 import SecurityInputDropdown from './Components/SecurityInputDropdown';
+import TransactionForm from './Components/TransactionForm';
 import SendMoney from './Components/SendMoney';
 import HomePage from './Pages/HomePage';
 import AboutPage from './Pages/AboutPage';
@@ -56,7 +57,7 @@ function Main() {
         <Route path="/login-dropdown" element={<SecurityInputDropdown />} />
         <Route path="/account-dashboard" element={<AccountDashboard isMenuOpen={isMenuOpen} userType="pin" userValue="1234" />} />
         <Route path="/send-money" element={<SendMoney />} />
-        {/* <Route path="/transaction-form" element={<TransactionForm isMenuOpen={isMenuOpen} />} /> */}
+        <Route path="/transaction-card" element={<TransactionForm isMenuOpen={isMenuOpen} />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
     </div>

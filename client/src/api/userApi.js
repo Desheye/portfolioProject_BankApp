@@ -36,3 +36,16 @@ export const login = async (userData) => {
     throw error;  // Re-throw error for handling in the calling code
   }
 };
+
+// Function to fetch transaction data
+export const fetchTransactionData = async () => {
+  try {
+    const response = await axios.get('/api/transaction');
+    return response.data; // Returning the simplified data from the backend
+  } catch (error) {
+    console.error('Error fetching transaction data:', error);
+    throw error;
+  }
+};
+
+
