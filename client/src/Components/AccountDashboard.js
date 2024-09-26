@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Card } from "react-bootstrap";
@@ -9,7 +10,7 @@ import {
   FaEllipsisH,
 } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import SendMoney from "./SendMoney";
+//import SendMoney from "./SendMoney";
 import "../css/accountDashboard.css";
 import { logoutUser } from "../store/actions/userActions";
 
@@ -19,10 +20,6 @@ const AccountDashboard = () => {
     (state) => state.user || {}
   );
   const user = userInfo?.user || {};
-
-  console.log("isAuthenticated:", isAuthenticated);
-  console.log("userInfo:", userInfo);
-  console.log("user:", user);
 
   const navigate = useNavigate();
 
@@ -36,13 +33,6 @@ const AccountDashboard = () => {
     dispatch(logoutUser()); // Clears user info from Redux and session storage
     navigate("/login-dropdown"); // Redirect to login
   };
-
-  // Clear session when navigating away from the dashboard
-  /*useEffect(() => {
-    return () => {
-      dispatch(logoutUser()); // Clear user session on unmount (navigating away)
-    };
-  }, [dispatch]);*/
 
   // Handle if the user is not authenticated
   if (!isAuthenticated) {
@@ -65,7 +55,10 @@ const AccountDashboard = () => {
       icon: <FaPaperPlane size={30} />,
       title: "Send Money",
       description: "Transfer funds to others",
-      link: "/send-money",
+      link: {
+        pathname: "/send-money",
+        state: { senderAccountNumber: user.accountNumber },
+      },
     },
     {
       icon: <FaInbox size={30} />,
@@ -77,7 +70,7 @@ const AccountDashboard = () => {
       icon: <FaFileInvoiceDollar size={30} />,
       title: "Transactions",
       description: "View recent transactions",
-      link: "/transaction-form",
+      link: "/transaction-card",
     },
     {
       icon: <FaEllipsisH size={30} />,
@@ -88,7 +81,7 @@ const AccountDashboard = () => {
   ];
 
   return (
-    <Container className="py-5 account-dashboard">
+    <Container className="py-5 account-dashboard" style={{ height: '100vh', overflowY: 'auto' }}>
       <Row className="mb-4 g-3">
         {features.map((feature, index) => (
           <Col key={index} lg={3} md={6} sm={12}>
@@ -105,7 +98,7 @@ const AccountDashboard = () => {
         ))}
       </Row>
 
-      <Card className="user-info-card mt-4">
+      <Card className="user-info-card mt-4 mx-auto">
         <Card.Body>
           <h3 className="user-name">
             {user.fullname || "Account Holder Name"}
@@ -119,8 +112,8 @@ const AccountDashboard = () => {
         </Card.Body>
       </Card>
 
-      {/* Include SendMoney component and pass the senderAccountNumber */}
-      <SendMoney senderAccountNumber={user.accountNumber} />
+      {/* Include SendMoney component and pass the senderAccountNumber 
+      <SendMoney senderAccountNumber={user.accountNumber} /> */}
 
       <div className="back-link-container">
         <Link to="/account" className="linktag">

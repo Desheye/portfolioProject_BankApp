@@ -80,6 +80,11 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: uuidv4 // Generate a UUID for sessionId when a new transaction is created
+  },
+  type: {
+    type: String,
+    enum: ['sent', 'received'],
+    required: true
   }
 });
 

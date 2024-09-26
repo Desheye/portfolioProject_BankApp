@@ -2,11 +2,16 @@
 const { User } = require('../models/User');
 const Transaction = require('../models/Transaction');
 
+// Utility function to handle errors
+const handleError = (res, message, status = 500) => {
+  console.error(message);
+  return res.status(status).json({ message });
+};
 
 // Controller to process the transaction
 const processTransaction = async (req, res) => {
-  console.log('Request body:', req.body);
   console.log('Submit Transaction Route Hit');
+
   try {
     const {
       senderAccountNumber,
@@ -15,69 +20,78 @@ const processTransaction = async (req, res) => {
       amount,
       currency,
       transferMethod,
-      memo
+      memo,
     } = req.body;
 
-    console.log({
-      senderAccountNumber,
-      recipientAccountNumber,
-      fullname,
-      amount,
-      currency,
-      transferMethod,
-      memo
-    });
+    // Log the received request body to ensure all fields are being passed correctly
+    console.log('Received Transaction Details:', req.body);
 
+    // Check if any required fields are missing
     if (!senderAccountNumber || !recipientAccountNumber || !fullname || !amount || !currency || !transferMethod) {
-      console.debug('Missing required transaction details');
-      return res.status(400).json({ message: 'Missing required transaction details' });
+      console.log('Missing required fields');
+      return handleError(res, 'Missing required transaction details', 400);
     }
 
+    // Log the search for recipient and sender
+    console.log('Searching for recipient with account number:', recipientAccountNumber);
     const recipient = await User.findOne({ accountNumber: recipientAccountNumber });
-    if (!recipient) {
-      console.debug('Recipient not found');
-      return res.status(404).json({ message: 'Recipient not found' });
-    }
+    console.log('Recipient found:', recipient ? recipient.fullname : 'Recipient not found');
 
+    console.log('Searching for sender with account number:', senderAccountNumber);
     const sender = await User.findOne({ accountNumber: senderAccountNumber });
+    console.log('Sender found:', sender ? sender.fullname : 'Sender not found');
+
+    // Error handling for non-existent users
+    if (!recipient) {
+      console.log('Recipient not found');
+      return handleError(res, 'Recipient not found', 404);
+    }
     if (!sender) {
-      console.debug('Sender not found');
-      return res.status(404).json({ message: 'Sender not found' });
+      console.log('Sender not found');
+      return handleError(res, 'Sender not found', 404);
     }
 
+    // Check for sufficient balance
     if (sender.currentBalance < amount) {
-      console.debug('Insufficient balance');
-      return res.status(400).json({ message: 'Insufficient balance' });
+      console.log('Insufficient balance:', sender.currentBalance, 'Requested amount:', amount);
+      return handleError(res, 'Insufficient balance', 400);
     }
 
-    // Deduct from sender and add to recipient balance
+    // Log balance updates for both sender and recipient
+    console.log('Deducting amount from sender:', sender.currentBalance, 'New balance:', sender.currentBalance - amount);
     sender.currentBalance -= amount;
-    await sender.save();
 
+    console.log('Adding amount to recipient:', recipient.currentBalance, 'New balance:', recipient.currentBalance + amount);
     recipient.currentBalance += amount;
+
+    // Save updated balances
+    await sender.save();
     await recipient.save();
 
-    // Create transaction with full details for sender and recipient
+    // Log transaction creation
+    console.log('Creating new transaction record');
     await Transaction.create({
       sender: {
         accountNumber: sender.accountNumber,
-        fullname: sender.fullname
+        fullname: sender.fullname,
       },
       recipient: {
         accountNumber: recipient.accountNumber,
-        fullname: recipient.fullname
+        fullname: recipient.fullname,
       },
       amount,
       currency,
       transferMethod,
-      memo
+      memo,
+      type: 'sent', // You might want to adjust the type based on your logic
     });
 
-    console.debug('Transaction processed successfully');
-    res.status(200).json({ message: 'Transaction successful' });
+    console.log('Transaction processed successfully');
+    return res.status(200).json({ message: 'Transaction successful' });
   } catch (error) {
+    // Log the error to understand what happened
     console.error('Error processing transaction:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    return handleError(res, 'Error processing transaction', 500);
   }
 };
 
@@ -101,44 +115,96 @@ const getRecipientName = async (req, res) => {
   } catch (error) {
     console.error('Error fetching recipient name:', error);
     res.status(500).json({ message: 'Internal Server Error' });
-  }
+}
 };
 
 // Get latest transaction data
 const getLatestTransaction = async (req, res) => {
   try {
-    // Fetch the latest transaction (assuming sorting by createdAt)
     const transaction = await Transaction.findOne().sort({ createdAt: -1 }).select({
       'recipient.fullname': 1,
       'recipient.accountNumber': 1,
       transactionId: 1,
       sessionId: 1,
-      createdAt: 1 // aliasing this to `transactionTime` on the frontend
+      createdAt: 1,
     });
-    
-    if (!transaction) {
-      return res.status(404).json({ message: 'No transaction found' });
-    }
 
-    // Return the transaction details in a simplified format
-    res.json({
+    if (!transaction) return handleError(res, 'No transaction found', 404);
+
+    return res.json({
       recipientFullName: transaction.recipient.fullname,
       recipientAccountNumber: transaction.recipient.accountNumber,
       transactionId: transaction.transactionId,
       sessionId: transaction.sessionId,
-      transactionTime: transaction.createdAt
+      transactionTime: transaction.createdAt,
     });
   } catch (error) {
-    console.error('Error fetching transaction data:', error);
-    res.status(500).json({ message: 'Server error' });
+    return handleError(res, 'Error fetching transaction data');
+  }
+};
+
+// Controller to fetch transactions involving a given account number
+const getTransactionsByAccountNumber = async (req, res) => {
+  console.log('Received request params:', req.params);
+  const { accountNumber } = req.params;
+
+  if (!accountNumber) {
+    console.log('Account number is missing');
+    return handleError(res, 'Account number is required', 400);
+  }
+
+  console.log('Fetching transactions for account:', accountNumber);
+
+  try {
+    const transactions = await Transaction.find({
+      $or: [
+        { 'sender.accountNumber': accountNumber },
+        { 'recipient.accountNumber': accountNumber },
+      ],
+    });
+
+    console.log('Found transactions:', transactions.length);
+
+    const formattedTransactions = transactions.map((transaction) => {
+      const isSender = transaction.sender.accountNumber === accountNumber;
+      return {
+        type: isSender ? 'sent' : 'received',
+        otherParty: isSender ? transaction.recipient : transaction.sender,
+        transactionId: transaction.transactionId,
+        sessionId: transaction.sessionId,
+        transactionTime: transaction.createdAt,
+        amount: transaction.amount,
+        currency: transaction.currency,
+        transferMethod: transaction.transferMethod,
+        memo: transaction.memo,
+        status: transaction.status
+      };
+    });
+
+    console.log('Formatted transactions:', formattedTransactions.length);
+    return res.status(200).json(formattedTransactions);
+  } catch (error) {
+    console.error('Error in getTransactionsByAccountNumber:', error);
+    return handleError(res, 'Error fetching transaction data');
   }
 };
 
 
+const getTransactions = async (req, res) => {
+  try {
+      const transactions = await Transaction.find({});
+      res.status(200).json(transactions);
+  } catch (error) {
+      console.error('Error fetching transactions:', error);
+      res.status(500).json({ message: 'Server error while fetching transactions' });
+  }
+};
 
 // Export the functions
 module.exports = {
   getRecipientName,
   processTransaction,
-  getLatestTransaction
+  getLatestTransaction,
+  getTransactionsByAccountNumber,
+  getTransactions
 };

@@ -48,7 +48,6 @@ const signup = async (req, res) => {
         pin: savedUser.pin,
         accountNumber: savedUser.accountNumber,
         currentBalance: savedUser.currentBalance,
-        image: savedUser.image,
       },
     });
   } catch (err) {

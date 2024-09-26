@@ -38,14 +38,19 @@ export const login = async (userData) => {
 };
 
 // Function to fetch transaction data
-export const fetchTransactionData = async () => {
+export const fetchTransactionData = async (accountNumber) => {
+  console.log('Fetching transaction data for account:', accountNumber);
   try {
-    const response = await axios.get('/api/transaction');
-    return response.data; // Returning the simplified data from the backend
+    const response = await axios.get(`/api/users/transactions/${accountNumber}`);
+    console.log('Response received:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Error fetching transaction data:', error);
+    console.log('Error response:', error.response);
     throw error;
   }
 };
+
+
 
 

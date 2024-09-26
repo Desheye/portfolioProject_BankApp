@@ -1,102 +1,73 @@
-/* Parent div occupying full width and height */
+/* Center the form on the viewport */
 .send-money-container {
-  width: 100%;
-  height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centers on x-axis */
-  align-items: center; /* Centers on y-axis */
-}
-.send-money-grid{
-  width: 500px;
-  padding: .5rem;
-  background-color: #f0f0f0;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensures it's centered vertically */
 }
 
-/* Form container with 500px width */
-.send-money-form {
-  width: 80%;
-  background-color: #f9f9f9; /* Light background for form */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
-}
-
-/* General styling for form groups */
-.send-money-form-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Labels */
-.send-money-label {
-  font-size: 16px;
-  margin-bottom: 5px;
-  font-weight: 500;
-  color: #333;
-}
-
-/* Input fields */
-.send-money-input,
+/* Styling for the input fields to touch sides of the viewport */
+.send-money-input, 
 .send-money-select {
   padding: 10px;
-  font-size: 14px;
+  margin: 0;
+  width: 100vw; /* Makes input fields extend to the viewport width */
+  box-sizing: border-box; /* Ensures padding is included in the width */
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-/* Style for select inputs */
-.send-money-select {
-  background-color: white;
+/* Label styling */
+.send-money-label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-/* Submit button styling */
+/* Formatting for the amount and recipient name text */
+.formatted-amount, 
+.send-money-recipient-name {
+  font-size: 1rem;
+  color: #333;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Button styling */
 .send-money-button {
-  background-color: #4caf50; /* Green background */
+  background-color: #007bff;
   color: white;
-  padding: 12px;
-  font-size: 16px;
+  padding: 10px 15px;
+  font-size: 1.1rem;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
+  margin-top: 1.5rem; /* Adds spacing between input fields and button */
 }
 
-.send-money-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+/* NavigationLink section */
+.navigation-links-container {
+  margin-top: 2rem; /* Space between the send button and NavigationLink */
+  height: 50px; /* Ensures there's enough height for spacing on mobile */
 }
 
-/* Recipient name display */
-.send-money-recipient-name {
-  padding: 10px;
-  font-size: 14px;
-  color: #333;
-  background-color: #f0f0f0;
-  border-radius: 5px;
+/* Transaction status styling */
+.transaction-status {
+  font-size: 1rem;
+  color: green;
+  text-align: center;
 }
 
-/* For groupings like currency and transfer method */
-.select-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
+/* Responsive behavior on smaller screens */
+@media (max-width: 768px) {
+  .send-money-input,
+  .send-money-select {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
 
-.select-group .send-money-form-group {
-  flex: 1;
-}
-.formattedAmount{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 .5rem;
-  width: 100%;
-}
-.formatted-amount{
-  padding: 0px .5rem;
-  border: 2px solid;
-  border-radius: .5rem;
-  box-shadow: .2rem .1rem #ccc;
-  width: max-content;
+  .send-money-button {
+    font-size: 1rem;
+    padding: 8px 10px;
+  }
 }

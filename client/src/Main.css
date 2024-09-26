@@ -65,8 +65,9 @@
 .career,
 .open_account,
 .account-dashboard,
-.transaction-card,
 .transaction-form,
+ .morepage,
+ .inboxpage,
 .login-dropdown,
 .send-money-container,
 .sendMoney {
@@ -90,10 +91,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(241, 220, 220, 0.9); /* semi-transparent background */
   padding: 10px 0;
   z-index: 1000;
   font-family: var(--fontFamilyMacondo);
+  margin-top: 2rem;
 }
 .link-container{
   display: flex;

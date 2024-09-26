@@ -1,162 +1,135 @@
-    .open_account {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        padding: .5rem;
-        overflow-y: auto;
-        font-family: var(--fontFamilyMacondo);
-        background-color: var(--bgColorOverlay);
-    }
+/* signUpForm.css */
 
-    .open_account h1 {
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #000;
-        letter-spacing: 5px;
-        margin-bottom: .5rem;
-        text-align: center;
+/* Container to center the form in the middle of the viewport */
+.open_account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 600px; /* Set max-width for responsiveness */
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  /* Styling the form input fields */
+  .inputbox {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  .inputbox input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+  }
+  
+  .inputbox input:focus {
+    border-color: #007bff;
+    background-color: #fff;
+  }
+  
+  /* Label styling and animation when input is focused or hovered */
+  .inputbox span {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: #999;
+  }
+  
+  .inputbox input:focus + span,
+  .inputbox input:not(:placeholder-shown) + span {
+    top: -20px;
+    left: 5px;
+    font-size: 0.9rem;
+    color: #007bff;
+  }
+  
+  .inputbox input:hover + span {
+    color: #0056b3;
+  }
+  
+  /* Submit button styling with hover effect */
+  .submit-btn {
+    text-align: center;
+  }
+  
+  .submit-btn .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .submit-btn .btn:hover {
+    transform: scale(1.05);
+    background-color: #0056b3;
+  }
+  
+  /* Back link styling */
+  .back-link-container {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  
+  .back-link-container .back {
+    color: #007bff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .back-link-container .back:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: red;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  /* For mobile responsiveness */
+  @media (max-width: 576px) {
+    h1 {
+      font-size: 1.8rem;
     }
-
-
-    form {
-        width: 400px;
-        height: 100%;
-        margin: 1rem 0px;
-        padding: 0 .9rem;
+  
+    .inputbox input {
+      font-size: 0.9rem;
     }
-
-    .open_account .inputbox {
-        position: relative;
-        width: var(--width);
-        height: 50px;
-        margin: 1rem 0px;
-        padding: 1rem 0px;
+  
+    .submit-btn .btn {
+      font-size: 1rem;
+      padding: 10px;
     }
-
-    .open_account .inputbox input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: var(--width);
-        border: 2px solid #000;
-        outline: none;
-        background: none;
-        padding: .4rem;
-        border-radius: 10px;
-        font-size: 1.2em;
-    }
-    .submit-btn{
-        width: 40%;
-        margin: 2rem 0px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .submit-btn .btn{
-       font-size: 1.3rem;
-        color: #000;
-        cursor: pointer;
-        overflow: hidden;
-        width: var(--width);
-       
-    }
-    .submit-btn .btn:hover{
-        background-color: rgb(19, 0, 18);
-        color: wheat;
-        letter-spacing: .2px;
-        transition: all .3s ease-in-out;
-        font-weight: var(--fwThin);
-    }
-    
-    
-    .open_account .inputbox span {
-        position: absolute;
-        top: 34px;
-        left: 20px;
-        font-size: var(--fs);
-        transition: 0.6s;
-        font-family: var(--fontFamilyMacondo);
-        background-color: var(--bgColorOverlay);
-        /* Match form background */
-        padding: 0 5px;
-    }
-
-    .open_account .inputbox input:focus~span,
-    .open_account .inputbox input:valid~span {
-        transform: translateX(-13px) translateY(-35px);
-        font-size: .8em;
-    }
-    .status-indicator {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 100px;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-        z-index: 1000;
-      }
-      
-      .status-indicator.success {
-        color: green;
-        opacity: 1;
-      }
-      
-      .status-indicator.failure {
-        color: red;
-        opacity: 1;
-      }
-      
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-      
-      .status-indicator.success,
-      .status-indicator.failure {
-        animation: fadeOut 2s ease-in-out 1s forwards;
-      }
-
-      /*** Media Query ***/
-
-     @media screen and (min-width: 481px) and (max-width: 834px) {
-        .open_account {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Aligns items to the top */
-            align-items: center;
-        }
-        
-        .open_account form {
-            width: 600px;
-            padding: 1rem 0px;
-            margin: 0;
-            height: auto;
-        }
-        .open_account .inputbox{
-            margin: 1.3rem 0px;
-        }
-        
-     }
-
-     @media screen and (min-width: 835px) and (max-width: 1290px){
-        .open_account form {
-            width: 600px;
-            padding: 1rem 0px;
-            margin: 0;
-            height: auto;
-        }
-        .open_account .inputbox{
-            margin: 1rem 0px;
-        }
-        .open_account .inputbox input {
-            font-size: 1.7rem;
-            height: 50px;
-            letter-spacing: 1.9px;
-        }
-        .btn{
-            font-size: 2.5rem;
-        }
-        
-     }
+  }
+  
